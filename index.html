@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WOMEN'S WRONGS — Feminist English Dictionary</title>
+<style>
+  :root{--bg:#1a1025;--card-bg:#2d1b3d;--accent:#c77dff;--accent2:#ff6b9d;
+    --accent3:#ffd166;--text:#f0e6ff;--text-dim:#b8a9c9;--brE:#7fb3ff;--amE:#ff9d7f;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 80px;
+    background-image:radial-gradient(circle at 20% 20%,rgba(199,125,255,.08) 0,transparent 50%),
+    radial-gradient(circle at 80% 80%,rgba(255,107,157,.08) 0,transparent 50%)}
+  header{text-align:center;margin-bottom:1.2rem;width:100%;max-width:720px}
+  .site-logo {
+    max-width: 100%;
+    height: auto;
+    max-height: 130px; /* Можно изменить размер по вкусу */
+    margin-bottom: 0.8rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    filter: drop-shadow(0 4px 10px rgba(255,107,157,.3));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+  .subtitle{color:var(--text-dim);font-size:.9rem;font-style:italic}
+
+  .controls{max-width:1200px;margin:14px auto 18px;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+  .btn-player{padding:10px 22px;border:none;background:linear-gradient(135deg,var(--accent2),var(--accent));
+    color:#fff;font-size:.88rem;font-weight:700;border-radius:30px;cursor:pointer;transition:transform .15s,box-shadow .2s;
+    font-family:inherit;box-shadow:0 4px 15px rgba(255,107,157,.35)}
+  .btn-player:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,157,.5)}
+
+  .legend{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;font-size:.85rem;color:var(--text-dim)}
+  .legend span{padding:5px 14px;background:rgba(255,255,255,.06);border-radius:20px;display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.06)}
+  .legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+  .theme-filter{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:26px;max-width:1200px;margin-left:auto;margin-right:auto}
+  .theme-btn{padding:8px 18px;border-radius:100px;border:1px solid rgba(199,125,255,.3);
+    background:rgba(199,125,255,.08);color:var(--accent);font-size:.82rem;font-weight:600;cursor:pointer;
+    transition:all .2s;font-family:inherit;white-space:nowrap}
+  .theme-btn:hover{background:rgba(199,125,255,.2);transform:translateY(-1px)}
+  .theme-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+    border-color:transparent;box-shadow:0 4px 15px rgba(199,125,255,.4)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;max-width:1200px;margin:0 auto}
+
+  .card{perspective:1200px;height:430px;cursor:pointer}
+  .card-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.4,.0,.2,1);transform-style:preserve-3d}
+  .card.flipped .card-inner{transform:rotateY(180deg)}
+  .card-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:18px;padding:20px;
+    display:flex;flex-direction:column;box-shadow:0 8px 28px rgba(0,0,0,.4);overflow-y:auto}
+  .front{background:var(--card-bg);border-top:5px solid var(--accent)}
+  .front .word{font-size:1.35rem;font-weight:700;color:#fff;text-align:center;margin-bottom:6px;line-height:1.3}
+  .front .ipa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+  .front .ipa-grid.single{grid-template-columns:1fr}
+  .front .ipa-col{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);text-align:center}
+  .front .ipa-col.british{border-left:3px solid var(--brE)}
+  .front .ipa-col.american{border-left:3px solid var(--amE)}
+  .front .ipa-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);
+    font-family:'Courier New',monospace;font-weight:600;margin-bottom:3px}
+  .front .ipa-col.british .ipa-label{color:var(--brE)}
+  .front .ipa-col.american .ipa-label{color:var(--amE)}
+  .front .phonetic{font-family:'Courier New',monospace;font-size:.95rem;color:var(--accent3);word-break:break-word}
+  .speak-row{display:flex;justify-content:center;gap:10px;margin:8px 0 10px;flex-wrap:wrap}
+  .speak-btn{background:rgba(199,125,255,.15);border:1px solid rgba(199,125,255,.35);color:var(--accent);
+    width:40px;height:40px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:all .15s;flex-shrink:0}
+  .speak-btn:hover{background:var(--accent);color:var(--bg);transform:scale(1.08)}
+  .speak-btn:active{transform:scale(.95)}
+  .speak-btn.speaking{background:var(--accent2);color:#fff;animation:pulse .9s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,157,.6)}50%{box-shadow:0 0 0 10px rgba(255,107,157,0)}}
+  .front .hint{text-align:center;font-size:.75rem;color:#7d5ba6;margin-top:auto;padding-top:8px;border-top:1px dashed rgba(199,125,255,.2)}
+  .back{background:linear-gradient(160deg,var(--card-bg),#1f1230);color:var(--text);transform:rotateY(180deg);
+    border-top:5px solid var(--accent2);justify-content:flex-start}
+  .back .translation{font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:10px;color:var(--accent3);line-height:1.35}
+  .back .label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-bottom:6px;
+    font-family:'Courier New',monospace;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:4px}
+  .back .example{font-size:.85rem;line-height:1.5;margin-bottom:10px;display:flex;align-items:flex-start;gap:8px}
+  .back .example .text{flex:1}
+  .back .example .en{font-weight:600;color:#fff;display:block;margin-bottom:2px}
+  .back .example .en em{color:var(--accent3);font-style:italic}
+  .back .example .ru{color:var(--text-dim);font-size:.8rem;display:block;font-style:italic;line-height:1.4}
+  .speak-mini{background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:50%;width:30px;height:30px;
+    font-size:.8rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    transition:background .15s,transform .15s}
+  .speak-mini:hover{background:rgba(255,255,255,.3);transform:scale(1.1)}
+  .speak-mini.speaking{background:var(--accent2);animation:pulse .9s infinite}
+
+  .player-overlay{display:none;position:fixed;inset:0;background:rgba(15,8,25,.94);z-index:1000;padding:30px 20px;
+    overflow-y:auto;backdrop-filter:blur(6px)}
+  .player-overlay.active{display:flex;align-items:center;justify-content:center}
+  .player-box{background:linear-gradient(160deg,var(--card-bg),#1a1025);border-radius:24px;padding:35px 30px;
+    max-width:500px;width:100%;text-align:center;color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.5);
+    border:1px solid rgba(199,125,255,.15)}
+  .player-box h2{font-size:1.4rem;margin-bottom:6px;color:var(--accent3)}
+  .player-box .sub{color:var(--text-dim);font-size:.88rem;margin-bottom:20px}
+  .player-word{font-size:1.8rem;font-weight:700;color:#fff;margin:18px 0 6px;min-height:55px;line-height:1.3}
+  .player-ipa{font-size:.95rem;color:var(--accent3);font-family:'Courier New',monospace;margin-bottom:6px;min-height:22px}
+  .player-trans{font-size:1.05rem;color:var(--text-dim);margin-bottom:20px;min-height:24px}
+  .player-progress{font-size:.85rem;color:#7d5ba6;margin-bottom:10px}
+  .player-bar{width:100%;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-bottom:20px}
+  .player-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent3),var(--accent));width:0%;transition:width .4s}
+  .player-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .player-buttons button{padding:11px 20px;border:none;border-radius:12px;font-size:.9rem;font-weight:700;
+    cursor:pointer;transition:transform .15s;font-family:inherit;min-width:85px}
+  .p-play{background:#4caf50;color:#fff}
+  .p-pause{background:#ff9800;color:#fff}
+  .p-next{background:#2196f3;color:#fff}
+  .p-close{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
+
+  @media (max-width:600px){
+    body{padding:1rem .6rem 60px}
+    .grid{grid-template-columns:1fr}
+    .card{height:450px}
+    h1{font-size:1.2rem}
+    .front .word{font-size:1.15rem}
+    .front .ipa-grid{grid-template-columns:1fr}
+    .player-word{font-size:1.4rem}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="logo.png" alt="WOMEN'S WRONGS" class="site-logo">
+  <p class="subtitle">The (Forever Incomplete) Feminist English Dictionary</p>
+</header>
+
+<div class="controls">
+  <button class="btn-player" onclick="openPlayer()">🎧 Режим звука</button>
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background:#7fb3ff;"></span> 🇬🇧 British (BrE)</span>
+  <span><span class="dot" style="background:#ff9d7f;"></span> 🇺🇸 American (AmE)</span>
+</div>
+
+<div class="theme-filter" id="themeFilter"></div>
+<div class="grid" id="cardGrid"></div>
+
+<div class="player-overlay" id="playerOverlay">
+  <div class="player-box">
+    <h2>🎧 Режим звука</h2>
+    <p class="sub">Слушай и повторяй</p>
+    <div class="player-word" id="playerWord">—</div>
+    <div class="player-ipa" id="playerIpa">—</div>
+    <div class="player-trans" id="playerTrans">—</div>
+    <div class="player-progress" id="playerProgress">0 / 0</div>
+    <div class="player-bar"><div class="player-bar-fill" id="playerBarFill"></div></div>
+    <div class="player-buttons">
+      <button class="p-play" onclick="playerPlay()">▶ Играть</button>
+      <button class="p-pause" onclick="playerPause()">⏸ Пауза</button>
+      <button class="p-next" onclick="playerNext()">⏭ Далее</button>
+      <button class="p-close" onclick="closePlayer()">✕ Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ДАННЫЕ  (camUk / camUs удалены — они играли мужским голосом)
+   ============================================================ */
+const ALL_CARDS = [
+  // ================= FEMINISM 101 =================
+  {w:"abuse (verb)", br:"/əˈbjuːz/", am:"/əˈbjuːz/", cat:"Feminism 101",
+   m:"плохо обращаться, применять насилие; злоупотреблять (глагол)",
+   ex:[{en:"He <em>abused</em> his position of power for years.",ru:"Он годами злоупотреблял своим положением."}]},
+  {w:"abuse (noun)", br:"/əˈbjuːs/", am:"/əˈbjuːs/", cat:"Feminism 101",
+   m:"абьюз, насилие, плохое обращение (существительное)",
+   ex:[{en:"Emotional <em>abuse</em> is often invisible but deeply damaging.",ru:"Эмоциональное насилие часто незаметно, но наносит глубокий вред."}]},
+  {w:"abuse of power", br:"/əˌbjuːs əv ˈpaʊər/", am:"/əˌbjuːs əv ˈpaʊ.ɚ/", cat:"Feminism 101",
+   m:"злоупотребление властью; использование власти во вред",
+   ex:[{en:"Politicians who <em>abuse power</em> must be held accountable.",ru:"Политики, злоупотребляющие властью, должны нести ответственность."}]},
+  {w:"agency", br:"/ˈeɪdʒənsi/", am:"/ˈeɪdʒənsi/", tts:"agency", cat:"Feminism 101",
+   m:"агентность: способность и возможность самостоятельно принимать решения и действовать",
+   ex:[{en:"Feminism is about giving women <em>agency</em> over their own lives.",ru:"Феминизм — о том, чтобы дать женщинам агентность в собственной жизни."}]},
+  {w:"gain agency", br:"/ɡeɪn ˈeɪdʒənsi/", am:"/ɡeɪn ˈeɪdʒənsi/", tts:"gain agency", cat:"Feminism 101",
+   m:"обрести агентность",
+   ex:[{en:"Through education, women <em>gain agency</em> and independence.",ru:"Через образование женщины обретают агентность и независимость."}]},
+  {w:"limit someone's agency", br:"/ˈlɪmɪt ˈsʌmwʌnz ˈeɪdʒənsi/", am:"/ˈlɪmɪt ˈsʌmwʌnz ˈeɪdʒənsi/", tts:"limit someone's agency", cat:"Feminism 101",
+   m:"ограничивать чью-то свободу самостоятельно принимать решения и действовать",
+   ex:[{en:"Controlling behaviour <em>limits someone's agency</em>.",ru:"Контролирующее поведение ограничивает чью-то агентность."}]},
+  {w:"body autonomy", br:"/ˈbɒdi ɔːˈtɒnəmi/", am:"/ˈbɑːdi ɔːˈtɑːnəmi/", tts:"body autonomy", cat:"Feminism 101",
+   m:"право распоряжаться собственным телом",
+   ex:[{en:"<em>Body autonomy</em> is a fundamental human right.",ru:"Телесная автономия — фундаментальное право человека."}]},
+  {w:"discrimination", br:"/dɪˌskrɪmɪˈneɪʃn/", am:"/dɪˌskrɪmɪˈneɪʃn/", tts:"discrimination", cat:"Feminism 101",
+   m:"дискриминация",
+   ex:[{en:"Gender <em>discrimination</em> at work is illegal in many countries.",ru:"Гендерная дискриминация на работе незаконна во многих странах."}]},
+  {w:"discriminate", br:"/dɪˈskrɪmɪneɪt/", am:"/dɪˈskrɪmɪneɪt/", tts:"discriminate", cat:"Feminism 101",
+   m:"дискриминировать, ущемлять в правах",
+   ex:[{en:"It is illegal to <em>discriminate</em> on the basis of gender.",ru:"Незаконно дискриминировать по признаку гендера."}]},
+  {w:"empowerment", br:"/ɪmˈpaʊəmənt/", am:"/ɪmˈpaʊərmənt/", tts:"empowerment", cat:"Feminism 101",
+   m:"расширение возможностей и самостоятельности",
+   ex:[{en:"Education is key to women's <em>empowerment</em>.",ru:"Образование — ключ к расширению возможностей женщин."}]},
+  {w:"empower", br:"/ɪmˈpaʊə/", am:"/ɪmˈpaʊər/", tts:"empower", cat:"Feminism 101",
+   m:"наделять полномочиями, расширять возможности",
+   ex:[{en:"We must <em>empower</em> women to make their own choices.",ru:"Мы должны расширять возможности женщин делать собственный выбор."}]},
+  {w:"gender bias", br:"/ˈdʒendə ˈbaɪəs/", am:"/ˈdʒendər ˈbaɪəs/", tts:"gender bias", cat:"Feminism 101",
+   m:"гендерная предвзятость",
+   ex:[{en:"<em>Gender bias</em> affects hiring and promotion decisions.",ru:"Гендерная предвзятость влияет на решения о найме и повышении."}]},
+  {w:"be biased against", br:"/biː ˈbaɪəst əˈɡenst/", am:"/biː ˈbaɪəst əˈɡenst/", tts:"be biased against", cat:"Feminism 101",
+   m:"быть предвзятой по отношению к кому-либо",
+   ex:[{en:"Recruiters often <em>are biased against</em> women with children.",ru:"Рекрутеры часто предвзяты к женщинам с детьми."}]},
+  {w:"gender inequality", br:"/ˈdʒendə ˌɪnɪˈkwɒləti/", am:"/ˈdʒendər ˌɪnɪˈkwɑːləti/", tts:"gender inequality", cat:"Feminism 101",
+   m:"гендерное неравенство",
+   ex:[{en:"<em>Gender inequality</em> harms everyone, not just women.",ru:"Гендерное неравенство вредит всем, а не только женщинам."}]},
+  {w:"intersectionality", br:"/ɪn.təˌsek.ʃənˈæl.ə.ti/", am:"/ɪn.t̬ɚˌsek.ʃənˈæl.ə.t̬i/", tts:"intersectionality", cat:"Feminism 101",
+   m:"интерсекциональность",
+   ex:[{en:"<em>Intersectionality</em> helps us see how Black women face both racism and sexism.",ru:"Интерсекциональность помогает увидеть, что чернокожие женщины сталкиваются и с расизмом, и с сексизмом."}]},
+  {w:"oppression", br:"/əˈpreʃn/", am:"/əˈpreʃn/", tts:"oppression", cat:"Feminism 101",
+   m:"систематическое угнетение",
+   ex:[{en:"Patriarchy is a system of <em>oppression</em>.",ru:"Патриархат — это система угнетения."}]},
+  {w:"oppress", br:"/əˈpres/", am:"/əˈpres/", tts:"oppress", cat:"Feminism 101",
+   m:"угнетать, притеснять",
+   ex:[{en:"Laws that <em>oppress</em> women must be repealed.",ru:"Законы, угнетающие женщин, должны быть отменены."}]},
+  {w:"patriarchy", br:"/ˈpeɪtriɑːki/", am:"/ˈpeɪtriɑːrki/", tts:"patriarchy", cat:"Feminism 101",
+   m:"патриархат",
+   ex:[{en:"Challenging the <em>patriarchy</em> means questioning who gets to decide.",ru:"Бросать вызов патриархату — значит задаваться вопросом, кто принимает решения."}]},
+  {w:"representation", br:"/ˌreprɪzenˈteɪʃn/", am:"/ˌreprɪzenˈteɪʃn/", tts:"representation", cat:"Feminism 101",
+   m:"представленность",
+   ex:[{en:"Women's <em>representation</em> in politics is still far from equal.",ru:"Представленность женщин в политике всё ещё далека от равенства."}]},
+
+  // ================= WORK & MONEY =================
+  {w:"CV", br:"/ˌsiː ˈviː/", am:"", tts:"C V", onlyBr:true, cat:"Work & Money",
+   m:"резюме (BrE)",
+   ex:[{en:"Send your <em>CV</em> and cover letter to apply.",ru:"Отправьте резюме и сопроводительное письмо для подачи заявки."}]},
+  {w:"résumé", br:"", am:"/ˈrɛzəmeɪ/", tts:"rez-oo-may", onlyAm:true, cat:"Work & Money",
+   m:"резюме (AmE)",
+   ex:[{en:"Update your <em>résumé</em> before applying for jobs.",ru:"Обновите резюме перед подачей заявок на работу."}]},
+  {w:"emotional labour / labor", br:"/ɪˈməʊʃənl ˈleɪbə/", am:"/ɪˈmoʊʃənl ˈleɪbər/", tts:"emotional labour", cat:"Work & Money",
+   m:"эмоциональный труд",
+   ex:[{en:"Women often carry the <em>emotional labour</em> in relationships.",ru:"Женщины часто несут эмоциональный труд в отношениях."}]},
+  {w:"invisible labour / labor", br:"/ɪnˈvɪzəbl ˈleɪbə/", am:"/ɪnˈvɪzəbl ˈleɪbər/", tts:"invisible labour", cat:"Work & Money",
+   m:"невидимый труд",
+   ex:[{en:"<em>Invisible labour</em> keeps households and economies running.",ru:"Невидимый труд поддерживает домашние хозяйства и экономику."}]},
+  {w:"gender pay gap", br:"/ˈdʒendə peɪ ɡæp/", am:"/ˈdʒendər peɪ ɡæp/", tts:"gender pay gap", cat:"Work & Money",
+   m:"гендерный разрыв в оплате труда",
+   ex:[{en:"The <em>gender pay gap</em> persists across almost every industry.",ru:"Гендерный разрыв в оплате труда сохраняется почти во всех отраслях."}]},
+  {w:"glass ceiling", br:"/ɡlɑːs ˈsiːlɪŋ/", am:"/ɡlæs ˈsiːlɪŋ/", tts:"glass ceiling", cat:"Work & Money",
+   m:"«стеклянный потолок»",
+   ex:[{en:"She hit the <em>glass ceiling</em> — all top roles went to men.",ru:"Она упёрлась в «стеклянный потолок» — все руководящие роли достались мужчинам."}]},
+  {w:"maternity leave", br:"/məˈtɜːnəti liːv/", am:"/məˈtɜːrnəti liːv/", tts:"maternity leave", cat:"Work & Money",
+   m:"(материнский) отпуск по уходу за новорожденным",
+   ex:[{en:"Paid <em>maternity leave</em> should be a basic right.",ru:"Оплачиваемый материнский отпуск должен быть базовым правом."}]},
+  {w:"parental leave", br:"/pəˈrentl liːv/", am:"/pəˈrentl liːv/", tts:"parental leave", cat:"Work & Money",
+   m:"родительский отпуск",
+   ex:[{en:"<em>Parental leave</em> should be available to both parents.",ru:"Родительский отпуск должен быть доступен обоим родителям."}]},
+  {w:"mental load", br:"/ˈmentl ləʊd/", am:"/ˈmentl loʊd/", tts:"mental load", cat:"Work & Money",
+   m:"умственная нагрузка",
+   ex:[{en:"The <em>mental load</em> of running a household is rarely recognised as work.",ru:"Умственная нагрузка по ведению хозяйства редко признаётся работой."}]},
+  {w:"the second shift", br:"/ðə ˈsekənd ʃɪft/", am:"/ðə ˈsekənd ʃɪft/", tts:"the second shift", cat:"Work & Money",
+   m:"«вторая смена»",
+   ex:[{en:"After her paid job, she comes home to <em>the second shift</em>.",ru:"После оплачиваемой работы она приходит домой на «вторую смену»."}]},
+  {w:"unpaid care work", br:"/ˌʌnˈpeɪd ˈkeə wɜːk/", am:"/ˌʌnˈpeɪd ˈker wɜːrk/", tts:"unpaid care work", cat:"Work & Money",
+   m:"неоплачиваемый труд по уходу",
+   ex:[{en:"<em>Unpaid care work</em> falls disproportionately on women.",ru:"Неоплачиваемый труд по уходу непропорционально ложится на женщин."}]},
+  {w:"work-life balance", br:"/ˌwɜːk laɪf ˈbæləns/", am:"/ˌwɜːrk laɪf ˈbæləns/", tts:"work life balance", cat:"Work & Money",
+   m:"баланс работы и личной жизни",
+   ex:[{en:"Real <em>work-life balance</em> is impossible without shared domestic labour.",ru:"Настоящий баланс работы и жизни невозможен без разделения домашнего труда."}]},
+
+  // ================= GENDER & BODIES =================
+  {w:"beauty standards", br:"/ˈbjuːti ˈstændədz/", am:"/ˈbjuːti ˈstændərdz/", tts:"beauty standards", cat:"Gender & Bodies",
+   m:"стандарты красоты",
+   ex:[{en:"Unrealistic <em>beauty standards</em> harm women's self-esteem.",ru:"Нереалистичные стандарты красоты вредят самооценке женщин."}]},
+  {w:"body image", br:"/ˈbɒdi ˈɪmɪdʒ/", am:"/ˈbɑːdi ˈɪmɪdʒ/", tts:"body image", cat:"Gender & Bodies",
+   m:"восприятие собственного тела",
+   ex:[{en:"Social media often damages young people's <em>body image</em>.",ru:"Соцсети часто вредят восприятию собственного тела у молодых людей."}]},
+  {w:"negative body image", br:"/ˈneɡətɪv ˈbɒdi ˈɪmɪdʒ/", am:"/ˈneɡətɪv ˈbɑːdi ˈɪmɪdʒ/", tts:"negative body image", cat:"Gender & Bodies",
+   m:"негативное восприятие своей внешности",
+   ex:[{en:"She struggled with <em>negative body image</em> for years.",ru:"Она годами боролась с негативным восприятием своей внешности."}]},
+  {w:"positive body image", br:"/ˈpɒzətɪv ˈbɒdi ˈɪmɪdʒ/", am:"/ˈpɑːzətɪv ˈbɑːdi ˈɪmɪdʒ/", tts:"positive body image", cat:"Gender & Bodies",
+   m:"позитивное восприятие своей внешности",
+   ex:[{en:"Therapy helped her develop a <em>positive body image</em>.",ru:"Терапия помогла ей развить позитивное восприятие своей внешности."}]},
+  {w:"body shaming", br:"/ˈbɒdi ʃeɪmɪŋ/", am:"/ˈbɑːdi ʃeɪmɪŋ/", tts:"body shaming", cat:"Gender & Bodies",
+   m:"бодишейминг",
+   ex:[{en:"<em>Body shaming</em> on social media is a serious problem.",ru:"Бодишейминг в соцсетях — серьёзная проблема."}]},
+  {w:"body shame someone", br:"/ˈbɒdi ʃeɪm ˈsʌmwʌn/", am:"/ˈbɑːdi ʃeɪm ˈsʌmwʌn/", tts:"body shame someone", cat:"Gender & Bodies",
+   m:"пристыжать кого-то за комплекцию",
+   ex:[{en:"Never <em>body shame someone</em> for how they look.",ru:"Никогда не пристыжайте человека за его внешность."}]},
+  {w:"consent", br:"/kənˈsent/", am:"/kənˈsent/", tts:"consent", cat:"Gender & Bodies",
+   m:"согласие",
+   ex:[{en:"Teaching kids about <em>consent</em> starts at home.",ru:"Обучение детей согласию начинается дома."}]},
+  {w:"give consent", br:"/ɡɪv kənˈsent/", am:"/ɡɪv kənˈsent/", tts:"give consent", cat:"Gender & Bodies",
+   m:"давать согласие",
+   ex:[{en:"Only she can <em>give consent</em> to what happens to her body.",ru:"Только она может дать согласие на то, что происходит с её телом."}]},
+  {w:"ask for consent", br:"/ɑːsk fə kənˈsent/", am:"/æsk fər kənˈsent/", tts:"ask for consent", cat:"Gender & Bodies",
+   m:"запрашивать согласие",
+   ex:[{en:"You should always <em>ask for consent</em> — every time.",ru:"Всегда нужно спрашивать согласие — каждый раз."}]},
+  {w:"double standards", br:"/ˈdʌbl ˈstændədz/", am:"/ˈdʌbl ˈstændərdz/", tts:"double standards", cat:"Gender & Bodies",
+   m:"двойные стандарты",
+   ex:[{en:"It's a <em>double standard</em>: assertive men are leaders, women are \"bossy\".",ru:"Это двойной стандарт: напористые мужчины — лидеры, женщины — «командирши»."}]},
+  {w:"gender roles", br:"/ˈdʒendə rəʊlz/", am:"/ˈdʒendər roʊlz/", tts:"gender roles", cat:"Gender & Bodies",
+   m:"гендерные роли",
+   ex:[{en:"Traditional <em>gender roles</em> limit everyone.",ru:"Традиционные гендерные роли ограничивают всех."}]},
+  {w:"gender stereotypes", br:"/ˈdʒendə ˈsteriətaɪps/", am:"/ˈdʒendər ˈsteriətaɪps/", tts:"gender stereotypes", cat:"Gender & Bodies",
+   m:"гендерные стереотипы",
+   ex:[{en:"Fairy tales often reinforce <em>gender stereotypes</em>.",ru:"Сказки часто воспроизводят гендерные стереотипы."}]},
+  {w:"internalised / internalized misogyny", br:"/ɪnˈtɜːnəlaɪzd mɪˈsɒdʒɪni/", am:"/ɪnˈtɜːrnəlaɪzd mɪˈsɑːdʒɪni/", tts:"internalised misogyny", cat:"Gender & Bodies",
+   m:"внутренняя мизогиния",
+   ex:[{en:"\"I'm not like other girls\" is a symptom of <em>internalised misogyny</em>.",ru:"«Я не такая, как другие девушки» — симптом внутренней мизогинии."}]},
+  {w:"objectification", br:"/əbˌdʒektɪfɪˈkeɪʃn/", am:"/əbˌdʒektɪfɪˈkeɪʃn/", tts:"objectification", cat:"Gender & Bodies",
+   m:"объективация",
+   ex:[{en:"The <em>objectification</em> of women in advertising harms girls.",ru:"Объективация женщин в рекламе вредит девочкам."}]},
+  {w:"objectify", br:"/əbˈdʒektɪfaɪ/", am:"/əbˈdʒektɪfaɪ/", tts:"objectify", cat:"Gender & Bodies",
+   m:"объективировать",
+   ex:[{en:"Ads that <em>objectify</em> women should be banned.",ru:"Реклама, объективирующая женщин, должна быть запрещена."}]},
+  {w:"reproductive rights", br:"/ˌriːprəˈdʌktɪv raɪts/", am:"/ˌriːprəˈdʌktɪv raɪts/", tts:"reproductive rights", cat:"Gender & Bodies",
+   m:"репродуктивные права",
+   ex:[{en:"<em>Reproductive rights</em> are human rights.",ru:"Репродуктивные права — это права человека."}]},
+
+  // ================= ADJECTIVES =================
+  {w:"empowered", br:"/ɪmˈpaʊəd/", am:"/ɪmˈpaʊərd/", tts:"empowered", cat:"Adjectives",
+   m:"обладающий большей самостоятельностью",
+   ex:[{en:"She felt <em>empowered</em> after learning self-defence.",ru:"Она почувствовала себя увереннее после курса самообороны."}]},
+  {w:"empowering", br:"/ɪmˈpaʊərɪŋ/", am:"/ɪmˈpaʊərɪŋ/", tts:"empowering", cat:"Adjectives",
+   m:"дающий чувство силы",
+   ex:[{en:"It was an <em>empowering</em> experience.",ru:"Это был опыт, дающий чувство силы."}]},
+  {w:"gendered", br:"/ˈdʒendəd/", am:"/ˈdʒendərd/", tts:"gendered", cat:"Adjectives",
+   m:"обусловленный гендером",
+   ex:[{en:"Housework is a deeply <em>gendered</em> issue.",ru:"Домашний труд — глубоко гендерно обусловленная проблема."}]},
+  {w:"marginalised / marginalized", br:"/ˈmɑːdʒɪnəlaɪzd/", am:"/ˈmɑːrdʒɪnəlaɪzd/", tts:"marginalised", cat:"Adjectives",
+   m:"маргинализированный",
+   ex:[{en:"Feminism must centre <em>marginalised</em> women's voices.",ru:"Феминизм должен ставить в центр голоса маргинализированных женщин."}]},
+  {w:"misogynistic", br:"/mɪˌsɒdʒɪˈnɪstɪk/", am:"/mɪˌsɑːdʒɪˈnɪstɪk/", tts:"misogynistic", cat:"Adjectives",
+   m:"мизогинный",
+   ex:[{en:"His remarks were openly <em>misogynistic</em>.",ru:"Его замечания были открыто мизогинными."}]},
+  {w:"patronising / patronizing", br:"/ˈpætrənaɪzɪŋ/", am:"/ˈpeɪtrənaɪzɪŋ/", tts:"patronising", cat:"Adjectives",
+   m:"снисходительный",
+   ex:[{en:"His <em>patronising</em> tone made everyone uncomfortable.",ru:"Его снисходительный тон заставил всех почувствовать неловкость."}]},
+  {w:"sexist", br:"/ˈseksɪst/", am:"/ˈseksɪst/", tts:"sexist", cat:"Adjectives",
+   m:"сексистский",
+   ex:[{en:"That joke was <em>sexist</em>, not funny.",ru:"Та шутка была сексистской, а не смешной."}]},
+  {w:"underrepresented", br:"/ˌʌndəreprɪˈzentɪd/", am:"/ˌʌndəreprɪˈzentɪd/", tts:"underrepresented", cat:"Adjectives",
+   m:"недостаточно представленный",
+   ex:[{en:"Women are still <em>underrepresented</em> in STEM.",ru:"Женщины всё ещё недостаточно представлены в STEM."}]},
+  {w:"unpaid", br:"/ˌʌnˈpeɪd/", am:"/ˌʌnˈpeɪd/", tts:"unpaid", cat:"Adjectives",
+   m:"неоплачиваемый",
+   ex:[{en:"Most care work is <em>unpaid</em> and done by women.",ru:"Большая часть труда по уходу неоплачиваема и выполняется женщинами."}]},
+  {w:"unacknowledged", br:"/ˌʌnəkˈnɒlɪdʒd/", am:"/ˌʌnəkˈnɑːlɪdʒd/", tts:"unacknowledged", cat:"Adjectives",
+   m:"непризнанный",
+   ex:[{en:"Her contributions went <em>unacknowledged</em> for years.",ru:"Её вклад оставался непризнанным годами."}]},
+
+  // ================= VERBS =================
+  {w:"call out", br:"/kɔːl aʊt/", am:"/kɔːl aʊt/", tts:"call out", cat:"Verbs",
+   m:"публично указать на неприемлемое поведение",
+   ex:[{en:"She <em>called out</em> sexist comments in the meeting.",ru:"Она публично указала на сексистские комментарии."},
+       {en:"We need to <em>call him out</em> for his sexist comments.",ru:"Нужно призвать его к ответу за сексистские комментарии."}]},
+  {w:"challenge", br:"/ˈtʃælɪndʒ/", am:"/ˈtʃælɪndʒ/", tts:"challenge", cat:"Verbs",
+   m:"оспаривать, ставить под сомнение",
+   ex:[{en:"We must <em>challenge</em> gender stereotypes.",ru:"Мы должны оспаривать гендерные стереотипы."}]},
+  {w:"discriminate against", br:"/dɪˈskrɪmɪneɪt əˈɡenst/", am:"/dɪˈskrɪmɪneɪt əˈɡenst/", tts:"discriminate against", cat:"Verbs",
+   m:"дискриминировать",
+   ex:[{en:"It is illegal to <em>discriminate against</em> women at work.",ru:"Незаконно дискриминировать женщин на работе."}]},
+  {w:"empower (verb)", br:"/ɪmˈpaʊə/", am:"/ɪmˈpaʊər/", tts:"empower", cat:"Verbs",
+   m:"расширять чьи-то возможности",
+   ex:[{en:"We must <em>empower</em> women to make their own choices.",ru:"Мы должны расширять возможности женщин делать свой выбор."}]},
+  {w:"mansplain", br:"/ˈmænspleɪn/", am:"/ˈmænspleɪn/", tts:"mansplain", cat:"Verbs",
+   m:"снисходительно объяснять женщине что-то",
+   ex:[{en:"He spent twenty minutes <em>mansplaining</em> Guzal her own theory!",ru:"Он двадцать минут объяснял Гузаль её собственную теорию!"}]},
+  {w:"opt out of", br:"/ɒpt aʊt əv/", am:"/ɑːpt aʊt əv/", tts:"opt out of", cat:"Verbs",
+   m:"отказаться от участия",
+   ex:[{en:"She chose to <em>opt out of</em> traditional gender roles.",ru:"Она решила отказаться от традиционных гендерных ролей."}]},
+  {w:"perpetuate", br:"/pəˈpetʃueɪt/", am:"/pərˈpetʃueɪt/", tts:"perpetuate", cat:"Verbs",
+   m:"поддерживать существование чего-либо вредного",
+   ex:[{en:"These jokes <em>perpetuate</em> sexist behaviour in the workplace.",ru:"Эти шутки поддерживают сексистское поведение."}]},
+  {w:"push back against", br:"/pʊʃ bæk əˈɡenst/", am:"/pʊʃ bæk əˈɡenst/", tts:"push back against", cat:"Verbs",
+   m:"сопротивляться",
+   ex:[{en:"Women are <em>pushing back against</em> unrealistic beauty standards.",ru:"Женщины сопротивляются нереалистичным стандартам красоты."}]},
+  {w:"reinforce", br:"/ˌriːɪnˈfɔːs/", am:"/ˌriːɪnˈfɔːrs/", tts:"reinforce", cat:"Verbs",
+   m:"укреплять, воспроизводить",
+   ex:[{en:"Some ads <em>reinforce</em> traditional gender roles.",ru:"Некоторые рекламы воспроизводят традиционные гендерные роли."}]},
+  {w:"speak up", br:"/spiːk ʌp/", am:"/spiːk ʌp/", tts:"speak up", cat:"Verbs",
+   m:"высказаться",
+   ex:[{en:"She was afraid to <em>speak up</em> about harassment in academia.",ru:"Она боялась высказаться о харассменте в академической среде."}]},
+  {w:"stand up for", br:"/stænd ʌp fɔː/", am:"/stænd ʌp fɔːr/", tts:"stand up for", cat:"Verbs",
+   m:"заступаться",
+   ex:[{en:"I had to learn to <em>stand up for</em> myself.",ru:"Мне пришлось научиться заступаться за себя."},
+       {en:"She <em>stands up for</em> women's rights.",ru:"Она выступает в защиту прав женщин."}]},
+  {w:"take on", br:"/teɪk ɒn/", am:"/teɪk ɑːn/", tts:"take on", cat:"Verbs",
+   m:"брать на себя",
+   ex:[{en:"Women still <em>take on</em> most of the housework.",ru:"Женщины всё ещё берут на себя большую часть домашней работы."}]},
+  {w:"undermine", br:"/ˌʌndəˈmaɪn/", am:"/ˌʌndərˈmaɪn/", tts:"undermine", cat:"Verbs",
+   m:"принижать, подрывать",
+   ex:[{en:"Constant criticism <em>undermines</em> women's confidence.",ru:"Постоянная критика подрывает уверенность женщин."}]},
+
+  // ================= HUMOUR =================
+  {w:"a running joke", br:"/ə ˈrʌnɪŋ dʒəʊk/", am:"/ə ˈrʌnɪŋ dʒoʊk/", tts:"a running joke", cat:"Humour",
+   m:"повторяющаяся шутка",
+   ex:[{en:"Her lateness became <em>a running joke</em> in the office.",ru:"Её опоздания стали повторяющейся шуткой в офисе."}]},
+  {w:"dark humour / humor", br:"/dɑːk ˈhjuːmə/", am:"/dɑːrk ˈhjuːmər/", tts:"dark humour", cat:"Humour",
+   m:"чёрный юмор",
+   ex:[{en:"Feminists often use <em>dark humour</em> to cope with sexism.",ru:"Феминистки часто используют чёрный юмор, чтобы справляться с сексизмом."}]},
+  {w:"parody", br:"/ˈpærədi/", am:"/ˈpærədi/", tts:"parody", cat:"Humour",
+   m:"пародия",
+   ex:[{en:"The sketch was a brilliant <em>parody</em> of corporate feminism.",ru:"Скетч был блестящей пародией на корпоративный феминизм."}]},
+  {w:"punchline", br:"/ˈpʌntʃlaɪn/", am:"/ˈpʌntʃlaɪn/", tts:"punchline", cat:"Humour",
+   m:"кульминация шутки",
+   ex:[{en:"The <em>punchline</em> was a brilliant feminist twist.",ru:"Кульминация шутки была блестящим феминистским поворотом."}]},
+  {w:"sarcasm", br:"/ˈsɑːkæzəm/", am:"/ˈsɑːrkæzəm/", tts:"sarcasm", cat:"Humour",
+   m:"сарказм",
+   ex:[{en:"Her <em>sarcasm</em> cut through the mansplaining.",ru:"Её сарказм пробил снисходительные объяснения."}]},
+  {w:"sarcastic", br:"/sɑːˈkæstɪk/", am:"/sɑːrˈkæstɪk/", tts:"sarcastic", cat:"Humour",
+   m:"саркастичный",
+   ex:[{en:"He didn't realise her \"compliment\" was <em>sarcastic</em>.",ru:"Он не понял, что её «комплимент» был саркастичным."}]},
+  {w:"satire", br:"/ˈsætaɪə/", am:"/ˈsætaɪər/", tts:"satire", cat:"Humour",
+   m:"сатира",
+   ex:[{en:"The novel is a sharp <em>satire</em> of patriarchal society.",ru:"Роман — острая сатира на патриархальное общество."}]},
+  {w:"satirise / satirize", br:"/ˈsætəraɪz/", am:"/ˈsætəraɪz/", tts:"satirise", cat:"Humour",
+   m:"сатирически изображать",
+   ex:[{en:"She <em>satirises</em> gender expectations in her stand-up.",ru:"Она высмеивает гендерные ожидания в своих стендапах."}]},
+  {w:"self-deprecating humour / humor", br:"/ˌself ˈdeprəkeɪtɪŋ ˈhjuːmə/", am:"/ˌself ˈdeprəkeɪtɪŋ ˈhjuːmər/", tts:"self-deprecating humour", cat:"Humour",
+   m:"самоироничный юмор",
+   ex:[{en:"Her <em>self-deprecating humour</em> puts everyone at ease.",ru:"Её самоироничный юмор всех расслабляет."}]},
+  {w:"the butt of the joke", br:"/ðə bʌt əv ðə dʒəʊk/", am:"/ðə bʌt əv ðə dʒoʊk/", tts:"the butt of the joke", cat:"Humour",
+   m:"объект насмешки",
+   ex:[{en:"She was <em>the butt of the joke</em> and nobody defended her.",ru:"Она была объектом насмешки, и никто её не защитил."}]},
+  {w:"be in on the joke", br:"/biː ɪn ɒn ðə dʒəʊk/", am:"/biː ɪn ɑːn ðə dʒoʊk/", tts:"be in on the joke", cat:"Humour",
+   m:"понимать шутку",
+   ex:[{en:"She's <em>in on the joke</em> — it's actually about her.",ru:"Она понимает шутку — она, вообще-то, про неё саму."}]},
+  {w:"crack a joke", br:"/kræk ə dʒəʊk/", am:"/kræk ə dʒoʊk/", tts:"crack a joke", cat:"Humour",
+   m:"отпустить шутку",
+   ex:[{en:"He tried to <em>crack a joke</em> but it fell flat.",ru:"Он попытался отпустить шутку, но она провалилась."}]},
+  {w:"fall flat", br:"/fɔːl flæt/", am:"/fɔːl flæt/", tts:"fall flat", cat:"Humour",
+   m:"не сработать (о шутке)",
+   ex:[{en:"His sexist joke <em>fell flat</em>.",ru:"Его сексистская шутка провалилась."}]},
+  {w:"land (about a joke)", br:"/lænd/", am:"/lænd/", tts:"land", cat:"Humour",
+   m:"зайти (о шутке)",
+   ex:[{en:"Her feminist punchline really <em>landed</em>.",ru:"Её феминистская шутка реально зашла."}]},
+  {w:"laugh at", br:"/lɑːf æt/", am:"/læf æt/", tts:"laugh at", cat:"Humour",
+   m:"смеяться над кем-то",
+   ex:[{en:"Don't <em>laugh at</em> her — laugh with her.",ru:"Не смейся над ней — смейся вместе с ней."}]},
+  {w:"laugh with", br:"/lɑːf wɪð/", am:"/læf wɪð/", tts:"laugh with", cat:"Humour",
+   m:"смеяться вместе с кем-то",
+   ex:[{en:"We <em>laughed with</em> her, not at her.",ru:"Мы смеялись вместе с ней, а не над ней."}]},
+  {w:"make a joke about", br:"/meɪk ə dʒəʊk əˈbaʊt/", am:"/meɪk ə dʒoʊk əˈbaʊt/", tts:"make a joke about", cat:"Humour",
+   m:"пошутить о чём-либо",
+   ex:[{en:"You can <em>make a joke about</em> almost anything — with care.",ru:"Можно пошутить почти о чём угодно — с осторожностью."}]},
+  {w:"make fun of someone", br:"/meɪk fʌn əv ˈsʌmwʌn/", am:"/meɪk fʌn əv ˈsʌmwʌn/", tts:"make fun of someone", cat:"Humour",
+   m:"высмеивать кого-то",
+   ex:[{en:"It's not okay to <em>make fun of someone</em> for their body.",ru:"Нельзя высмеивать человека за его тело."}]},
+  {w:"poke fun at", br:"/pəʊk fʌn æt/", am:"/poʊk fʌn æt/", tts:"poke fun at", cat:"Humour",
+   m:"слегка подшучивать",
+   ex:[{en:"The series <em>pokes fun at</em> corporate feminism.",ru:"Сериал слегка подшучивает над корпоративным феминизмом."}]},
+  {w:"punch down", br:"/pʌntʃ daʊn/", am:"/pʌntʃ daʊn/", tts:"punch down", cat:"Humour",
+   m:"шутить за счёт более слабых",
+   ex:[{en:"Jokes about women's driving <em>punch down</em>.",ru:"Шутки про женщин за рулём бьют вниз."}]},
+  {w:"punch up", br:"/pʌntʃ ʌp/", am:"/pʌntʃ ʌp/", tts:"punch up", cat:"Humour",
+   m:"направлять шутку против влиятельных",
+   ex:[{en:"Good comedy <em>punches up</em>, not down.",ru:"Хорошая комедия бьёт вверх, а не вниз."}]},
+  {w:"take a joke", br:"/teɪk ə dʒəʊk/", am:"/teɪk ə dʒoʊk/", tts:"take a joke", cat:"Humour",
+   m:"«понимать юмор»",
+   ex:[{en:"\"Jesus, these feminists can't <em>take a joke</em>!\"",ru:"«Господи, эти феминистки совсем не понимают юмор!»"}]},
+
+  // ================= MEDIA =================
+  {w:"diversity", br:"/daɪˈvɜːsəti/", am:"/daɪˈvɜːrsəti/", tts:"diversity", cat:"Media",
+   m:"разнообразие",
+   ex:[{en:"Real <em>diversity</em> means more than just ticking boxes.",ru:"Настоящее разнообразие — это больше, чем галочки в отчёте."}]},
+  {w:"female character", br:"/ˈfiːmeɪl ˈkærəktə/", am:"/ˈfiːmeɪl ˈkærəktər/", tts:"female character", cat:"Media",
+   m:"женский персонаж",
+   ex:[{en:"She's the only well-written <em>female character</em> in the show.",ru:"Она единственный хорошо прописанный женский персонаж в сериале."}]},
+  {w:"female lead", br:"/ˈfiːmeɪl liːd/", am:"/ˈfiːmeɪl liːd/", tts:"female lead", cat:"Media",
+   m:"главная героиня",
+   ex:[{en:"The film finally has a proper <em>female lead</em>.",ru:"В фильме наконец есть настоящая главная героиня."}]},
+  {w:"love interest", br:"/lʌv ˈɪntrəst/", am:"/lʌv ˈɪntrəst/", tts:"love interest", cat:"Media",
+   m:"романтический интерес",
+   ex:[{en:"She's tired of being just the <em>love interest</em>.",ru:"Ей надоело быть просто объектом романтического интереса."}]},
+  {w:"portrayal", br:"/pɔːˈtreɪəl/", am:"/pɔːrˈtreɪəl/", tts:"portrayal", cat:"Media",
+   m:"изображение персонажа",
+   ex:[{en:"The show's <em>portrayal</em> of women was shallow.",ru:"Изображение женщин в сериале было поверхностным."}]},
+  {w:"stereotypical portrayal", br:"/ˌsteriəˈtɪpɪkl pɔːˈtreɪəl/", am:"/ˌsteriəˈtɪpɪkl pɔːrˈtreɪəl/", tts:"stereotypical portrayal", cat:"Media",
+   m:"стереотипное изображение",
+   ex:[{en:"Critics called out the <em>stereotypical portrayal</em> of Latina women.",ru:"Критики указали на стереотипное изображение латиноамериканок."}]},
+  {w:"portray", br:"/pɔːˈtreɪ/", am:"/pɔːrˈtreɪ/", tts:"portray", cat:"Media",
+   m:"изображать",
+   ex:[{en:"The novel <em>portrays</em> women as full human beings.",ru:"Роман изображает женщин как полноценных людей."}]},
+  {w:"sexualisation / sexualization", br:"/ˌsekʃuəlaɪˈzeɪʃn/", am:"/ˌsekʃuəlaɪˈzeɪʃn/", tts:"sexualisation", cat:"Media",
+   m:"сексуализация",
+   ex:[{en:"The <em>sexualisation</em> of teenage girls in media is harmful.",ru:"Сексуализация девочек-подростков в медиа вредна."}]},
+  {w:"sexualise / sexualize", br:"/ˈsekʃuəlaɪz/", am:"/ˈsekʃuəlaɪz/", tts:"sexualise", cat:"Media",
+   m:"сексуализировать",
+   ex:[{en:"Ads often <em>sexualise</em> women to sell products.",ru:"Реклама часто сексуализирует женщин."}]},
+  {w:"sidekick", br:"/ˈsaɪd.kɪk/", am:"/ˈsɑɪdˌkɪk/", tts:"sidekick", cat:"Media",
+   m:"напарник",
+   ex:[{en:"She's tired of being the hero's <em>sidekick</em>.",ru:"Ей надоело быть напарницей героя."}]},
+  {w:"supporting character", br:"/səˈpɔːtɪŋ ˈkærəktə/", am:"/səˈpɔːrtɪŋ ˈkærəktər/", tts:"supporting character", cat:"Media",
+   m:"персонаж второго плана",
+   ex:[{en:"Women are too often relegated to <em>supporting character</em> roles.",ru:"Женщин слишком часто отправляют на роли второго плана."}]},
+  {w:"male gaze", br:"/meɪl ɡeɪz/", am:"/meɪl ɡeɪz/", tts:"male gaze", cat:"Media",
+   m:"«мужской взгляд»",
+   ex:[{en:"Laura Mulvey's theory of the <em>male gaze</em> changed film studies.",ru:"Теория «мужского взгляда» Лоры Малви изменила киноведение."}]},
+  {w:"female gaze", br:"/ˈfiːmeɪl ɡeɪz/", am:"/ˈfiːmeɪl ɡeɪz/", tts:"female gaze", cat:"Media",
+   m:"«женский взгляд»",
+   ex:[{en:"The director's work is a clear example of the <em>female gaze</em>.",ru:"Работа режиссёрки — яркий пример «женского взгляда»."}]},
+  {w:"tokenism", br:"/ˈtəʊkənɪzəm/", am:"/ˈtoʊkənɪzəm/", tts:"tokenism", cat:"Media",
+   m:"токенизм",
+   ex:[{en:"Hiring one woman to the board is <em>tokenism</em>.",ru:"Нанять одну женщину в совет директоров — это токенизм."}]},
+  {w:"token female character", br:"/ˈtəʊkən ˈfiːmeɪl ˈkærəktə/", am:"/ˈtoʊkən ˈfiːmeɪl ˈkærəktər/", tts:"token female character", cat:"Media",
+   m:"единственный женский персонаж",
+   ex:[{en:"Black Widow used to be the <em>token female character</em> in the Avengers.",ru:"Чёрная Вдова когда-то была единственным женским персонажем."}]},
+  {w:"challenge the narrative", br:"/ˈtʃælɪndʒ ðə ˈnærətɪv/", am:"/ˈtʃælɪndʒ ðə ˈnærətɪv/", tts:"challenge the narrative", cat:"Media",
+   m:"оспаривать нарратив",
+   ex:[{en:"Her memoir <em>challenges the narrative</em> of the \"perfect victim\".",ru:"Её мемуары оспаривают нарратив «идеальной жертвы»."}]},
+  {w:"depict", br:"/dɪˈpɪkt/", am:"/dɪˈpɪkt/", tts:"depict", cat:"Media",
+   m:"изображать",
+   ex:[{en:"The painting <em>depicts</em> women as powerful figures.",ru:"Картина изображает женщин как влиятельных фигур."}]},
+  {w:"perpetuate stereotypes", br:"/pəˈpetʃueɪt ˈsteriətaɪps/", am:"/pərˈpetʃueɪt ˈsteriətaɪps/", tts:"perpetuate stereotypes", cat:"Media",
+   m:"воспроизводить стереотипы",
+   ex:[{en:"This ad <em>perpetuates stereotypes</em> about working mothers.",ru:"Эта реклама воспроизводит стереотипы о работающих матерях."}]},
+  {w:"subvert expectations", br:"/səbˈvɜːt ˌekspekˈteɪʃnz/", am:"/səbˈvɜːrt ˌekspekˈteɪʃnz/", tts:"subvert expectations", cat:"Media",
+   m:"нарушать ожидания",
+   ex:[{en:"The finale <em>subverts expectations</em> brilliantly.",ru:"Финал блестяще нарушает ожидания."}]},
+];
+
+/* ============================================================
+   СОСТОЯНИЕ
+   ============================================================ */
+let currentTheme = 'all';
+let filteredCards = [...ALL_CARDS];
+let playerIndex = 0;
+let playerPlaying = false;
+let playerTimer = null;
+
+/* ============================================================
+   ФИЛЬТР ТЕМ
+   ============================================================ */
+const themes = ['all', ...new Set(ALL_CARDS.map(c => c.cat))];
+function renderThemeFilter() {
+  const container = document.getElementById('themeFilter');
+  container.innerHTML = themes.map(t => {
+    const label = t === 'all' ? '📚 Все темы' : t;
+    return `<button class="theme-btn ${t === currentTheme ? 'active' : ''}" onclick="filterTheme('${t}')">${label}</button>`;
+  }).join('');
+}
+function filterTheme(t) {
+  currentTheme = t;
+  filteredCards = t === 'all' ? [...ALL_CARDS] : ALL_CARDS.filter(c => c.cat === t);
+  renderThemeFilter();
+  renderCards();
+  playerIndex = 0;
+  updatePlayerDisplay();
+}
+
+/* ============================================================
+   ЭКРАНИРОВАНИЕ ДЛЯ HTML-АТРИБУТОВ
+   ============================================================ */
+function escAttr(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/* ============================================================
+   РЕНДЕР КАРТОЧЕК
+   ============================================================ */
+function renderCards() {
+  const grid = document.getElementById('cardGrid');
+  grid.innerHTML = filteredCards.map((c) => {
+    const globalIndex = ALL_CARDS.indexOf(c);
+    const showBr = !c.onlyAm && c.br;
+    const showAm = !c.onlyBr && c.am;
+    const singleCol = (showBr && !showAm) || (!showBr && showAm);
+
+    let ipaHtml = '';
+    if (showBr) {
+      ipaHtml += `
+        <div class="ipa-col british">
+          <div class="ipa-label">🇬🇧 BrE</div>
+          <div class="phonetic">${c.br}</div>
+        </div>`;
+    }
+    if (showAm) {
+      ipaHtml += `
+        <div class="ipa-col american">
+          <div class="ipa-label">🇺🇸 AmE</div>
+          <div class="phonetic">${c.am}</div>
+        </div>`;
+    }
+
+    let speakButtons = '';
+    if (showBr || !showAm) {
+      speakButtons += `<button class="speak-btn" onclick="event.stopPropagation(); speakCard(${globalIndex}, 'BrE', this)" title="British pronunciation">🔊</button>`;
+    }
+    if (showAm || !showBr) {
+      speakButtons += `<button class="speak-btn" onclick="event.stopPropagation(); speakCard(${globalIndex}, 'AmE', this)" title="American pronunciation">🔊</button>`;
+    }
+
+    const cardAccent = c.onlyAm ? 'AmE' : 'BrE';
+
+    return `
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="word">${c.w}</div>
+          <div class="ipa-grid ${singleCol ? 'single' : ''}">
+            ${ipaHtml}
+          </div>
+          <div class="speak-row">
+            ${speakButtons}
+          </div>
+          <div class="hint">нажми, чтобы увидеть перевод</div>
+        </div>
+        <div class="card-face back">
+          <div class="translation">${c.m}</div>
+          <div class="label">Примеры</div>
+          ${c.ex.map(e => `
+            <div class="example">
+              <div class="text">
+                <div class="en">${e.en}</div>
+                <div class="ru">${e.ru}</div>
+              </div>
+              <button class="speak-mini"
+                      data-text="${escAttr(e.en.replace(/<[^>]*>/g, ''))}"
+                      data-accent="${cardAccent}"
+                      onclick="event.stopPropagation(); speakFromBtn(this)">🔊</button>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   SPEECH — QuickPronounce (женский голос) → женский TTS
+   ============================================================ */
+
+/* Быстрый доступ к API. Ключ НЕ нужен для этого эндпоинта. */
+const QP_BASE = 'https://api.quickpronounce.site/v1/pronunciation/';
+const _qpCache = new Map();   // `${accent}:${gender}:${word}` → dataURL
+
+/* Запрос MP3 в base64. accent: 'uk' | 'us'. */
+async function fetchQuickPronounce(word, accent) {
+  const key = `${accent}:female:${word.toLowerCase()}`;
+  if (_qpCache.has(key)) return _qpCache.get(key);
+
+  const url = `${QP_BASE}${encodeURIComponent(word)}?accent=${accent}&gender=female&speed=normal`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('QP HTTP ' + res.status);
+
+  const json = await res.json();
+  if (!json.success || !json.data?.audio?.content) throw new Error('QP: no audio');
+
+  const dataUrl = `data:audio/mp3;base64,${json.data.audio.content}`;
+  _qpCache.set(key, dataUrl);
+  return dataUrl;
+}
+
+/* --- предзагрузка голосов TTS --- */
+let _voicesReady = false;
+function loadVoices() {
+  const v = speechSynthesis.getVoices();
+  if (v && v.length) _voicesReady = true;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+/* Известные ЖЕНСКИЕ голоса */
+const FEMALE_NAMES = [
+  'samantha','victoria','karen','moira','tessa','fiona','serena','allison',
+  'ava','nicky','susan','kate','stephanie','emily','zoe','libby','sonia','catherine',
+  'zira','hazel','aria','jenny','michelle','eva',
+  'google uk english female','google us english','google uk english',
+  'en-gb-x-gba-local','en-us-x-sfg-local','en-us-x-tpf-local'
+];
+
+function isFemaleVoice(v) {
+  const name = (v.name || '').toLowerCase();
+  if (/female|woman/.test(name)) return true;
+  return FEMALE_NAMES.some(fn => name.includes(fn));
+}
+
+/* Выбор женского голоса. Без мужского fallback — лучше тишина. */
+function pickFemaleVoice(accent) {
+  const voices = speechSynthesis.getVoices() || [];
+  if (!voices.length) return null;
+
+  const norm = v => (v.lang || '').replace('_','-').toLowerCase();
+  const want  = (accent === 'BrE') ? 'en-gb' : 'en-us';
+  const other = (accent === 'BrE') ? 'en-us' : 'en-gb';
+
+  let c = voices.filter(v => norm(v).startsWith(want) && isFemaleVoice(v));
+  if (c.length) return c[0];
+
+  c = voices.filter(v => norm(v).startsWith(other) && isFemaleVoice(v));
+  if (c.length) return c[0];
+
+  c = voices.filter(v => norm(v).startsWith('en') && isFemaleVoice(v));
+  if (c.length) return c[0];
+
+  return null;
+}
+
+/* TTS-фолбэк: только женский голос */
+function ttsFallback(c, accent, btn, textOverride) {
+  try { speechSynthesis.cancel(); } catch(e) {}
+
+  const raw  = textOverride || c.tts || c.w;
+  const text = raw.replace(/<[^>]*>/g, '').replace(/\s*\(.*?\)\s*/g, ' ').trim();
+
+  const doSpeak = () => {
+    const utter = new SpeechSynthesisUtterance(text);
+    const voice = pickFemaleVoice(accent);
+    if (!voice) {
+      console.warn('[TTS] Женский английский голос не найден. Мужской fallback отключён.');
+      if (btn) btn.classList.remove('speaking');
+      return;
+    }
+    utter.voice  = voice;
+    utter.lang   = voice.lang;
+    utter.rate   = 0.9;
+    utter.pitch  = 1.1;
+    utter.volume = 1.0;
+    utter.onend   = () => { if (btn) btn.classList.remove('speaking'); };
+    utter.onerror = () => { if (btn) btn.classList.remove('speaking'); };
+    speechSynthesis.speak(utter);
+  };
+
+  if (!speechSynthesis.getVoices().length) {
+    let tries = 0;
+    const wait = setInterval(() => {
+      if (speechSynthesis.getVoices().length || ++tries > 20) {
+        clearInterval(wait);
+        doSpeak();
+      }
+    }, 100);
+    return;
+  }
+  doSpeak();
+}
+
+/* Озвучка слова — сначала QuickPronounce (женский голос), иначе TTS */
+async function speakCard(cardIndex, accent, btn) {
+  const c = ALL_CARDS[cardIndex];
+  if (!c) return;
+  if (btn) btn.classList.add('speaking');
+
+  const allowBr = !c.onlyAm && !!c.br;
+  const allowAm = !c.onlyBr && !!c.am;
+  let eff = accent;
+  if (accent === 'BrE' && !allowBr && allowAm) eff = 'AmE';
+  if (accent === 'AmE' && !allowAm && allowBr) eff = 'BrE';
+
+  const qpAccent = (eff === 'BrE') ? 'uk' : 'us';
+  const word = (c.tts || c.w).replace(/\s*\(.*?\)\s*/g, ' ').trim();
+
+  try {
+    const src = await fetchQuickPronounce(word, qpAccent);
+    const audio = new Audio(src);
+    audio.onended = () => { if (btn) btn.classList.remove('speaking'); };
+    audio.onerror = () => {
+      if (btn) btn.classList.remove('speaking');
+      ttsFallback(c, eff, btn);
+    };
+    await audio.play();
+    window._audio = audio;
+    return;
+  } catch (err) {
+    console.warn('[QP] ошибка, перехожу на TTS:', err.message);
+  }
+
+  ttsFallback(c, eff, btn);
+}
+
+/* Озвучка примера — сразу женский TTS (API не синтезирует предложения) */
+function speakText(text, accent, btn) {
+  if (btn) btn.classList.add('speaking');
+  ttsFallback({ tts: text, w: text }, accent, btn, text);
+}
+
+/* Клик по кнопке с data-text / data-accent */
+function speakFromBtn(btn) {
+  const text   = btn.dataset.text || '';
+  const accent = btn.dataset.accent || 'BrE';
+  speakText(text, accent, btn);
+}
+
+/* ============================================================
+   PLAYER
+   ============================================================ */
+function openPlayer() {
+  document.getElementById('playerOverlay').classList.add('active');
+  playerIndex = 0;
+  updatePlayerDisplay();
+}
+function closePlayer() {
+  document.getElementById('playerOverlay').classList.remove('active');
+  playerPause();
+  speechSynthesis.cancel();
+  if (window._audio) { try { window._audio.pause(); } catch(e){} }
+}
+function updatePlayerDisplay() {
+  const list = filteredCards.length ? filteredCards : ALL_CARDS;
+  if (!list.length) return;
+  const c = list[playerIndex % list.length];
+  document.getElementById('playerWord').textContent = c.w;
+  const ipaParts = [];
+  if (!c.onlyAm && c.br) ipaParts.push('BrE ' + c.br);
+  if (!c.onlyBr && c.am) ipaParts.push('AmE ' + c.am);
+  document.getElementById('playerIpa').textContent = ipaParts.join('  ·  ');
+  document.getElementById('playerTrans').textContent = c.m;
+  document.getElementById('playerProgress').textContent = `${playerIndex + 1} / ${list.length}`;
+  document.getElementById('playerBarFill').style.width = ((playerIndex + 1) / list.length * 100) + '%';
+}
+function playerPlay() {
+  if (playerPlaying) return;
+  playerPlaying = true;
+  const list = filteredCards.length ? filteredCards : ALL_CARDS;
+  const c = list[playerIndex % list.length];
+  const globalIndex = ALL_CARDS.indexOf(c);
+  const dummyBtn = document.createElement('span');
+  const playerAccent = c.onlyAm ? 'AmE' : 'BrE';
+  speakCard(globalIndex, playerAccent, dummyBtn);
+  playerTimer = setTimeout(() => {
+    if (playerPlaying) playerNext();
+  }, 2200);
+}
+function playerPause() {
+  playerPlaying = false;
+  clearTimeout(playerTimer);
+  if (window._audio) { try { window._audio.pause(); } catch(e){} }
+  speechSynthesis.cancel();
+}
+function playerNext() {
+  playerPause();
+  const list = filteredCards.length ? filteredCards : ALL_CARDS;
+  playerIndex = (playerIndex + 1) % list.length;
+  updatePlayerDisplay();
+  playerPlay();
+}
+
+/* ============================================================
+   ИНИЦИАЛИЗАЦИЯ
+   ============================================================ */
+renderThemeFilter();
+renderCards();
+</script>
+
+</body>
+</html>
