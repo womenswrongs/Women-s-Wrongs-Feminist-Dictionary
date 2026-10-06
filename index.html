@@ -14,15 +14,15 @@
     radial-gradient(circle at 80% 80%,rgba(255,107,157,.08) 0,transparent 50%)}
   header{text-align:center;margin-bottom:1.2rem;width:100%;max-width:720px}
   .site-logo {
-    max-width: 100%;
-    height: auto;
-    max-height: 130px; /* Можно изменить размер по вкусу */
-    margin-bottom: 0.8rem;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    filter: drop-shadow(0 4px 10px rgba(255,107,157,.3));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+  max-width: 100%;
+  height: auto;
+  max-height: 130px;
+  margin-bottom: 0.8rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  filter: drop-shadow(0 4px 10px rgba(255,107,157,.3));
+}
   .subtitle{color:var(--text-dim);font-size:.9rem;font-style:italic}
 
   .controls{max-width:1200px;margin:14px auto 18px;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
@@ -30,6 +30,8 @@
     color:#fff;font-size:.88rem;font-weight:700;border-radius:30px;cursor:pointer;transition:transform .15s,box-shadow .2s;
     font-family:inherit;box-shadow:0 4px 15px rgba(255,107,157,.35)}
   .btn-player:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,157,.5)}
+  .btn-trainer{background:linear-gradient(135deg,var(--accent3),var(--accent2));box-shadow:0 4px 15px rgba(255,209,102,.35)}
+  .btn-trainer:hover{box-shadow:0 6px 22px rgba(255,209,102,.5)}
 
   .legend{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;font-size:.85rem;color:var(--text-dim)}
   .legend span{padding:5px 14px;background:rgba(255,255,255,.06);border-radius:20px;display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.06)}
@@ -109,6 +111,99 @@
   .p-next{background:#2196f3;color:#fff}
   .p-close{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
 
+  /* ===================== ТРЕНАЖЁР ===================== */
+  .trainer-overlay{display:none;position:fixed;inset:0;background:rgba(15,8,25,.96);z-index:1100;
+    overflow-y:auto;backdrop-filter:blur(6px)}
+  .trainer-overlay.active{display:block}
+  .trainer-box{background:linear-gradient(160deg,var(--card-bg),#1a1025);border-radius:24px;padding:30px 26px;
+    max-width:640px;width:calc(100% - 32px);color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.5);
+    border:1px solid rgba(199,125,255,.15);margin:40px auto 60px;position:relative}
+  .trainer-box h2{font-size:1.35rem;margin-bottom:6px;color:var(--accent3);text-align:center}
+  .trainer-box .sub{color:var(--text-dim);font-size:.85rem;margin-bottom:20px;text-align:center;font-style:italic}
+  .trainer-section{margin-bottom:16px}
+  .trainer-section-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);
+    font-family:'Courier New',monospace;margin-bottom:8px}
+  .trainer-chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{padding:7px 14px;border-radius:100px;border:1px solid rgba(199,125,255,.3);
+    background:rgba(199,125,255,.08);color:var(--accent);font-size:.8rem;font-weight:600;cursor:pointer;
+    transition:all .18s;font-family:inherit;white-space:nowrap}
+  .chip:hover{background:rgba(199,125,255,.2)}
+  .chip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;
+    box-shadow:0 3px 12px rgba(199,125,255,.35)}
+  .trainer-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .trainer-buttons button{padding:11px 22px;border:none;border-radius:12px;font-size:.9rem;font-weight:700;
+    cursor:pointer;transition:transform .15s;font-family:inherit}
+  .trainer-buttons button:hover{transform:translateY(-1px)}
+  .trainer-stats{display:flex;gap:10px;justify-content:center;margin-top:24px;padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+  .stat{display:flex;flex-direction:column;align-items:center;padding:8px 16px;background:rgba(255,255,255,.04);
+    border-radius:12px;min-width:86px;border:1px solid rgba(255,255,255,.06)}
+  .stat-num{font-size:1.3rem;font-weight:700;color:var(--accent3)}
+  .stat-label{font-size:.66rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+
+  .quiz-header{display:flex;justify-content:space-between;align-items:center;gap:10px;
+    font-size:.82rem;color:var(--text-dim);font-family:'Courier New',monospace;margin-bottom:8px}
+  .quiz-header #quizScore{color:#4caf50;font-weight:700}
+  .quiz-close-btn{background:rgba(255,107,157,.15);border:1px solid rgba(255,107,157,.4);color:#ffb3cd;
+    width:32px;height:32px;border-radius:50%;font-size:.9rem;font-weight:700;cursor:pointer;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit;line-height:1}
+  .quiz-close-btn:hover{background:var(--accent2);color:#fff;border-color:transparent;transform:scale(1.08)}
+  .quiz-close-btn:active{transform:scale(.95)}
+  .quiz-bar{width:100%;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-bottom:22px}
+  .quiz-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent3),var(--accent));width:0%;
+    transition:width .4s}
+  .quiz-type{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);text-align:center;
+    font-family:'Courier New',monospace;margin-bottom:14px}
+  .quiz-prompt{text-align:center;margin-bottom:22px;min-height:56px}
+  .q-word{font-size:1.6rem;font-weight:700;color:#fff;line-height:1.3}
+  .q-trans{font-size:1.1rem;color:var(--accent3);line-height:1.45}
+  .q-sentence{font-size:1.05rem;color:#fff;line-height:1.55;font-style:italic}
+  .q-sentence .gap{color:var(--accent3);font-weight:700;font-style:normal}
+  .q-ipa{font-family:'Courier New',monospace;font-size:.8rem;color:var(--text-dim);margin-top:8px}
+  .q-play-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;
+    padding:16px 32px;border-radius:50px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;
+    box-shadow:0 6px 20px rgba(199,125,255,.35);transition:transform .15s}
+  .q-play-btn:hover{transform:scale(1.05)}
+  .quiz-options{display:grid;gap:10px}
+  .q-option{padding:14px 18px;border-radius:14px;border:1.5px solid rgba(199,125,255,.25);
+    background:rgba(199,125,255,.06);color:var(--text);font-size:.95rem;font-weight:600;cursor:pointer;
+    font-family:inherit;text-align:left;transition:all .18s;line-height:1.35}
+  .q-option:hover:not(:disabled){background:rgba(199,125,255,.18);border-color:var(--accent);transform:translateX(3px)}
+  .q-option:disabled{cursor:default;opacity:.9}
+  .q-option.correct{background:rgba(76,175,80,.25);border-color:#4caf50;color:#fff;opacity:1}
+  .q-option.wrong{background:rgba(244,67,54,.22);border-color:#f44336;color:#fff;opacity:1}
+  .quiz-options.spell-mode{display:flex;flex-direction:column;gap:10px}
+  #spellInput{padding:14px 18px;border-radius:14px;border:1.5px solid rgba(199,125,255,.3);
+    background:rgba(255,255,255,.05);color:#fff;font-size:1rem;font-family:inherit;outline:none;transition:all .15s}
+  #spellInput:focus{border-color:var(--accent);background:rgba(199,125,255,.1)}
+  #spellInput.correct{border-color:#4caf50;background:rgba(76,175,80,.15)}
+  #spellInput.wrong{border-color:#f44336;background:rgba(244,67,54,.15)}
+  .spell-check{background:#2196f3;color:#fff;padding:13px;border:none;border-radius:12px;
+    font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .15s}
+  .spell-check:hover{transform:translateY(-1px)}
+  .quiz-feedback{margin-top:16px;min-height:46px;text-align:center}
+  .fb{padding:12px 14px;border-radius:12px;font-size:.88rem;line-height:1.45}
+  .fb.ok{background:rgba(76,175,80,.15);border:1px solid rgba(76,175,80,.4);color:#a5d6a7}
+  .fb.no{background:rgba(244,67,54,.12);border:1px solid rgba(244,67,54,.35);color:#ffcdd2}
+  .fb b{color:#fff}
+  .quiz-next-wrap{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .quiz-next-wrap button{padding:12px 28px;border:none;border-radius:12px;font-size:.9rem;font-weight:700;
+    cursor:pointer;font-family:inherit;transition:transform .15s}
+  .quiz-next-wrap button:hover{transform:translateY(-1px)}
+  .q-finish{background:rgba(255,107,157,.18);color:#ffb3cd;border:1px solid rgba(255,107,157,.4) !important}
+  .q-finish:hover{background:var(--accent2);color:#fff;border-color:transparent !important}
+
+  .result-score{font-size:2.1rem;font-weight:700;text-align:center;color:var(--accent3);margin:16px 0 6px}
+  .result-msg{text-align:center;color:var(--text-dim);font-size:.95rem;margin-bottom:22px;font-style:italic}
+  .result-list{max-height:300px;overflow-y:auto;background:rgba(0,0,0,.18);border-radius:14px;padding:14px 16px;
+    border:1px solid rgba(255,255,255,.07)}
+  .result-list-title{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);
+    font-family:'Courier New',monospace;margin-bottom:10px}
+  .result-item{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.88rem;line-height:1.45}
+  .result-item:last-child{border-bottom:none}
+  .result-item b{color:#fff}
+  .result-perfect{text-align:center;padding:24px 10px;color:#a5d6a7;font-size:.95rem}
+
   @media (max-width:600px){
     body{padding:1rem .6rem 60px}
     .grid{grid-template-columns:1fr}
@@ -117,18 +212,24 @@
     .front .word{font-size:1.15rem}
     .front .ipa-grid{grid-template-columns:1fr}
     .player-word{font-size:1.4rem}
+    .trainer-box{padding:22px 16px;margin:16px auto 40px}
+    .q-word{font-size:1.3rem}
+    .q-trans{font-size:.98rem}
+    .q-option{padding:12px 14px;font-size:.88rem}
+    .result-score{font-size:1.7rem}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <img src="logo.png" alt="WOMEN'S WRONGS" class="site-logo">
+ <img src="logo.png" alt="WOMEN'S WRONGS" class="site-logo">
   <p class="subtitle">The (Forever Incomplete) Feminist English Dictionary</p>
 </header>
 
 <div class="controls">
   <button class="btn-player" onclick="openPlayer()">🎧 Режим звука</button>
+  <button class="btn-player btn-trainer" onclick="openTrainer()">🎯 Тренажёр</button>
 </div>
 
 <div class="legend">
@@ -139,6 +240,7 @@
 <div class="theme-filter" id="themeFilter"></div>
 <div class="grid" id="cardGrid"></div>
 
+<!-- ===================== PLAYER ===================== -->
 <div class="player-overlay" id="playerOverlay">
   <div class="player-box">
     <h2>🎧 Режим звука</h2>
@@ -157,19 +259,102 @@
   </div>
 </div>
 
+<!-- ===================== TRAINER ===================== -->
+<div class="trainer-overlay" id="trainerOverlay">
+  <div class="trainer-box">
+
+    <!-- START -->
+    <div id="trainerStart">
+      <h2>🎯 Тренажёр</h2>
+      <p class="sub">Выбери тему, тип заданий и количество вопросов</p>
+
+      <div class="trainer-section">
+        <div class="trainer-section-title">Тема</div>
+        <div class="trainer-chips" id="trainerThemes"></div>
+      </div>
+
+      <div class="trainer-section">
+        <div class="trainer-section-title">Тип заданий</div>
+        <div class="trainer-chips" id="trainerModes">
+          <button class="chip active" data-mode="mixed">🎲 Смешанный</button>
+          <button class="chip" data-mode="en-ru">🇬🇧 → 🇷🇺 Перевод</button>
+          <button class="chip" data-mode="ru-en">🇷🇺 → 🇬🇧 Перевод</button>
+          <button class="chip" data-mode="listen">🎧 Аудио</button>
+          <button class="chip" data-mode="fill">✍️ Пропуск</button>
+          <button class="chip" data-mode="spell">⌨️ Написание</button>
+        </div>
+      </div>
+
+      <div class="trainer-section">
+        <div class="trainer-section-title">Количество вопросов</div>
+        <div class="trainer-chips" id="trainerCount">
+          <button class="chip" data-count="5">5</button>
+          <button class="chip active" data-count="10">10</button>
+          <button class="chip" data-count="15">15</button>
+          <button class="chip" data-count="20">20</button>
+        </div>
+      </div>
+
+      <div class="trainer-buttons">
+        <button class="p-play" onclick="startTrainer()">▶ Начать</button>
+        <button class="p-close" onclick="closeTrainer()">✕ Закрыть</button>
+      </div>
+
+      <div class="trainer-stats" id="trainerStats"></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="trainerQuiz" style="display:none">
+      <div class="quiz-header">
+        <span id="quizProgress">1 / 10</span>
+        <span id="quizScore">✓ 0</span>
+        <button class="quiz-close-btn" onclick="closeTrainerEarly()" title="Закрыть тренажёр">✕</button>
+      </div>
+      <div class="quiz-bar"><div class="quiz-bar-fill" id="quizBarFill"></div></div>
+      <div class="quiz-type" id="quizType"></div>
+      <div class="quiz-prompt" id="quizPrompt"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-next-wrap" id="quizNextWrap" style="display:none">
+        <button class="p-next" onclick="nextQuestion()">Далее →</button>
+        <button class="q-finish" onclick="finishEarly()">🏁 Завершить</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="trainerResult" style="display:none">
+      <h2 id="resultTitle">Готово!</h2>
+      <div class="result-score" id="resultScore"></div>
+      <div class="result-msg" id="resultMsg"></div>
+      <div class="result-list" id="resultList"></div>
+      <div class="trainer-buttons">
+        <button class="p-play" onclick="restartTrainer()">🔁 Ещё раз</button>
+        <button class="p-next" id="repeatBtn" style="display:none" onclick="repeatMistakes()">🎯 Повторить ошибки</button>
+        <button class="p-close" onclick="closeTrainer()">✕ Закрыть</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
 /* ============================================================
-   ДАННЫЕ  (camUk / camUs удалены — они играли мужским голосом)
+   ДАННЫЕ
    ============================================================ */
 const ALL_CARDS = [
   // ================= FEMINISM 101 =================
   {w:"abuse (verb)", br:"/əˈbjuːz/", am:"/əˈbjuːz/", cat:"Feminism 101",
+   camUk:"https://dictionary.cambridge.org/media/english/uk_pron/u/uka/ukabs/ukabsor022.mp3",
+   camUs:"https://dictionary.cambridge.org/media/english/us_pron/u/usz/uszzz/uszzzzc001.mp3",
    m:"плохо обращаться, применять насилие; злоупотреблять (глагол)",
    ex:[{en:"He <em>abused</em> his position of power for years.",ru:"Он годами злоупотреблял своим положением."}]},
   {w:"abuse (noun)", br:"/əˈbjuːs/", am:"/əˈbjuːs/", cat:"Feminism 101",
+   camUk:"https://dictionary.cambridge.org/media/english/uk_pron/u/uka/ukabs/ukabsor021.mp3",
+   camUs:"https://dictionary.cambridge.org/media/english/us_pron/u/usa/usad6/usad6006.mp3",
    m:"абьюз, насилие, плохое обращение (существительное)",
    ex:[{en:"Emotional <em>abuse</em> is often invisible but deeply damaging.",ru:"Эмоциональное насилие часто незаметно, но наносит глубокий вред."}]},
   {w:"abuse of power", br:"/əˌbjuːs əv ˈpaʊər/", am:"/əˌbjuːs əv ˈpaʊ.ɚ/", cat:"Feminism 101",
+   camUs:"https://dictionary.cambridge.org/media/english/us_pron/c/cdo/cdo07/cdo0725usabus0009.mp3",
    m:"злоупотребление властью; использование власти во вред",
    ex:[{en:"Politicians who <em>abuse power</em> must be held accountable.",ru:"Политики, злоупотребляющие властью, должны нести ответственность."}]},
   {w:"agency", br:"/ˈeɪdʒənsi/", am:"/ˈeɪdʒənsi/", tts:"agency", cat:"Feminism 101",
@@ -206,6 +391,8 @@ const ALL_CARDS = [
    m:"гендерное неравенство",
    ex:[{en:"<em>Gender inequality</em> harms everyone, not just women.",ru:"Гендерное неравенство вредит всем, а не только женщинам."}]},
   {w:"intersectionality", br:"/ɪn.təˌsek.ʃənˈæl.ə.ti/", am:"/ɪn.t̬ɚˌsek.ʃənˈæl.ə.t̬i/", tts:"intersectionality", cat:"Feminism 101",
+   camUk:"https://dictionary.cambridge.org/ru/media/%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9/uk_pron/c/cdo/cdo03/cdo0317inteuk2055.mp3",
+   camUs:"https://dictionary.cambridge.org/ru/media/%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9/us_pron/c/cdo/cdo03/cdo0318usinte2519.mp3",
    m:"интерсекциональность",
    ex:[{en:"<em>Intersectionality</em> helps us see how Black women face both racism and sexism.",ru:"Интерсекциональность помогает увидеть, что чернокожие женщины сталкиваются и с расизмом, и с сексизмом."}]},
   {w:"oppression", br:"/əˈpreʃn/", am:"/əˈpreʃn/", tts:"oppression", cat:"Feminism 101",
@@ -226,6 +413,7 @@ const ALL_CARDS = [
    m:"резюме (BrE)",
    ex:[{en:"Send your <em>CV</em> and cover letter to apply.",ru:"Отправьте резюме и сопроводительное письмо для подачи заявки."}]},
   {w:"résumé", br:"", am:"/ˈrɛzəmeɪ/", tts:"rez-oo-may", onlyAm:true, cat:"Work & Money",
+   camUs:"https://dictionary.cambridge.org/ru/media/%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9/us_pron/e/eus/eus73/eus73812.mp3",
    m:"резюме (AmE)",
    ex:[{en:"Update your <em>résumé</em> before applying for jobs.",ru:"Обновите резюме перед подачей заявок на работу."}]},
   {w:"emotional labour / labor", br:"/ɪˈməʊʃənl ˈleɪbə/", am:"/ɪˈmoʊʃənl ˈleɪbər/", tts:"emotional labour", cat:"Work & Money",
@@ -480,7 +668,9 @@ const ALL_CARDS = [
   {w:"sexualise / sexualize", br:"/ˈsekʃuəlaɪz/", am:"/ˈsekʃuəlaɪz/", tts:"sexualise", cat:"Media",
    m:"сексуализировать",
    ex:[{en:"Ads often <em>sexualise</em> women to sell products.",ru:"Реклама часто сексуализирует женщин."}]},
-  {w:"sidekick", br:"/ˈsaɪd.kɪk/", am:"/ˈsɑɪdˌkɪk/", tts:"sidekick", cat:"Media",
+  {w:"sidekick", br:"/ˈsaɪd.kɪk/", am:"/ˈsɑɪdˌkɪk/", cat:"Media",
+   camUk:"https://dictionary.cambridge.org/media/english/uk_pron/u/uks/uksic/uksickl013.mp3",
+   camUs:"https://dictionary.cambridge.org/media/english/us_pron/e/eus/eus74/eus74224.mp3",
    m:"напарник",
    ex:[{en:"She's tired of being the hero's <em>sidekick</em>.",ru:"Ей надоело быть напарницей героя."}]},
   {w:"supporting character", br:"/səˈpɔːtɪŋ ˈkærəktə/", am:"/səˈpɔːrtɪŋ ˈkærəktər/", tts:"supporting character", cat:"Media",
@@ -542,18 +732,6 @@ function filterTheme(t) {
 }
 
 /* ============================================================
-   ЭКРАНИРОВАНИЕ ДЛЯ HTML-АТРИБУТОВ
-   ============================================================ */
-function escAttr(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-/* ============================================================
    РЕНДЕР КАРТОЧЕК
    ============================================================ */
 function renderCards() {
@@ -588,8 +766,6 @@ function renderCards() {
       speakButtons += `<button class="speak-btn" onclick="event.stopPropagation(); speakCard(${globalIndex}, 'AmE', this)" title="American pronunciation">🔊</button>`;
     }
 
-    const cardAccent = c.onlyAm ? 'AmE' : 'BrE';
-
     return `
     <div class="card" onclick="this.classList.toggle('flipped')">
       <div class="card-inner">
@@ -612,10 +788,7 @@ function renderCards() {
                 <div class="en">${e.en}</div>
                 <div class="ru">${e.ru}</div>
               </div>
-              <button class="speak-mini"
-                      data-text="${escAttr(e.en.replace(/<[^>]*>/g, ''))}"
-                      data-accent="${cardAccent}"
-                      onclick="event.stopPropagation(); speakFromBtn(this)">🔊</button>
+              <button class="speak-mini" onclick="event.stopPropagation(); speakText('${e.en.replace(/<[^>]*>/g, '').replace(/'/g, "\\'")}', 'BrE', this)">🔊</button>
             </div>
           `).join('')}
         </div>
@@ -625,159 +798,129 @@ function renderCards() {
 }
 
 /* ============================================================
-   SPEECH — QuickPronounce (женский голос) → женский TTS
+   SPEECH
    ============================================================ */
-
-/* Быстрый доступ к API. Ключ НЕ нужен для этого эндпоинта. */
-const QP_BASE = 'https://api.quickpronounce.site/v1/pronunciation/';
-const _qpCache = new Map();   // `${accent}:${gender}:${word}` → dataURL
-
-/* Запрос MP3 в base64. accent: 'uk' | 'us'. */
-async function fetchQuickPronounce(word, accent) {
-  const key = `${accent}:female:${word.toLowerCase()}`;
-  if (_qpCache.has(key)) return _qpCache.get(key);
-
-  const url = `${QP_BASE}${encodeURIComponent(word)}?accent=${accent}&gender=female&speed=normal`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('QP HTTP ' + res.status);
-
-  const json = await res.json();
-  if (!json.success || !json.data?.audio?.content) throw new Error('QP: no audio');
-
-  const dataUrl = `data:audio/mp3;base64,${json.data.audio.content}`;
-  _qpCache.set(key, dataUrl);
-  return dataUrl;
-}
-
-/* --- предзагрузка голосов TTS --- */
-let _voicesReady = false;
-function loadVoices() {
-  const v = speechSynthesis.getVoices();
-  if (v && v.length) _voicesReady = true;
-}
-if (typeof speechSynthesis !== 'undefined') {
-  loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-/* Известные ЖЕНСКИЕ голоса */
-const FEMALE_NAMES = [
-  'samantha','victoria','karen','moira','tessa','fiona','serena','allison',
-  'ava','nicky','susan','kate','stephanie','emily','zoe','libby','sonia','catherine',
-  'zira','hazel','aria','jenny','michelle','eva',
-  'google uk english female','google us english','google uk english',
-  'en-gb-x-gba-local','en-us-x-sfg-local','en-us-x-tpf-local'
-];
-
-function isFemaleVoice(v) {
-  const name = (v.name || '').toLowerCase();
-  if (/female|woman/.test(name)) return true;
-  return FEMALE_NAMES.some(fn => name.includes(fn));
-}
-
-/* Выбор женского голоса. Без мужского fallback — лучше тишина. */
-function pickFemaleVoice(accent) {
-  const voices = speechSynthesis.getVoices() || [];
-  if (!voices.length) return null;
-
-  const norm = v => (v.lang || '').replace('_','-').toLowerCase();
-  const want  = (accent === 'BrE') ? 'en-gb' : 'en-us';
-  const other = (accent === 'BrE') ? 'en-us' : 'en-gb';
-
-  let c = voices.filter(v => norm(v).startsWith(want) && isFemaleVoice(v));
-  if (c.length) return c[0];
-
-  c = voices.filter(v => norm(v).startsWith(other) && isFemaleVoice(v));
-  if (c.length) return c[0];
-
-  c = voices.filter(v => norm(v).startsWith('en') && isFemaleVoice(v));
-  if (c.length) return c[0];
-
-  return null;
-}
-
-/* TTS-фолбэк: только женский голос */
-function ttsFallback(c, accent, btn, textOverride) {
-  try { speechSynthesis.cancel(); } catch(e) {}
-
-  const raw  = textOverride || c.tts || c.w;
-  const text = raw.replace(/<[^>]*>/g, '').replace(/\s*\(.*?\)\s*/g, ' ').trim();
-
-  const doSpeak = () => {
-    const utter = new SpeechSynthesisUtterance(text);
-    const voice = pickFemaleVoice(accent);
-    if (!voice) {
-      console.warn('[TTS] Женский английский голос не найден. Мужской fallback отключён.');
-      if (btn) btn.classList.remove('speaking');
-      return;
-    }
-    utter.voice  = voice;
-    utter.lang   = voice.lang;
-    utter.rate   = 0.9;
-    utter.pitch  = 1.1;
-    utter.volume = 1.0;
-    utter.onend   = () => { if (btn) btn.classList.remove('speaking'); };
-    utter.onerror = () => { if (btn) btn.classList.remove('speaking'); };
-    speechSynthesis.speak(utter);
-  };
-
-  if (!speechSynthesis.getVoices().length) {
-    let tries = 0;
-    const wait = setInterval(() => {
-      if (speechSynthesis.getVoices().length || ++tries > 20) {
-        clearInterval(wait);
-        doSpeak();
-      }
-    }, 100);
-    return;
-  }
-  doSpeak();
-}
-
-/* Озвучка слова — сначала QuickPronounce (женский голос), иначе TTS */
-async function speakCard(cardIndex, accent, btn) {
+function speakCard(cardIndex, accent, btn) {
   const c = ALL_CARDS[cardIndex];
   if (!c) return;
   if (btn) btn.classList.add('speaking');
 
-  const allowBr = !c.onlyAm && !!c.br;
-  const allowAm = !c.onlyBr && !!c.am;
-  let eff = accent;
-  if (accent === 'BrE' && !allowBr && allowAm) eff = 'AmE';
-  if (accent === 'AmE' && !allowAm && allowBr) eff = 'BrE';
+  const wantsBr = accent === 'BrE';
+  const wantsAm = accent === 'AmE';
+  const allowBr = !c.onlyAm && c.br;
+  const allowAm = !c.onlyBr && c.am;
 
-  const qpAccent = (eff === 'BrE') ? 'uk' : 'us';
-  const word = (c.tts || c.w).replace(/\s*\(.*?\)\s*/g, ' ').trim();
+  let effectiveAccent = accent;
+  if (wantsBr && !allowBr && allowAm) effectiveAccent = 'AmE';
+  if (wantsAm && !allowAm && allowBr) effectiveAccent = 'BrE';
 
-  try {
-    const src = await fetchQuickPronounce(word, qpAccent);
-    const audio = new Audio(src);
-    audio.onended = () => { if (btn) btn.classList.remove('speaking'); };
-    audio.onerror = () => {
-      if (btn) btn.classList.remove('speaking');
-      ttsFallback(c, eff, btn);
-    };
-    await audio.play();
-    window._audio = audio;
-    return;
-  } catch (err) {
-    console.warn('[QP] ошибка, перехожу на TTS:', err.message);
+  if (c.camUk || c.camUs) {
+    const url = effectiveAccent === 'BrE' ? (c.camUk || c.camUs) : c.camUs;
+    if (url) {
+      const audio = new Audio();
+      audio.src = url;
+      audio.onended = () => { if (btn) btn.classList.remove('speaking'); };
+      audio.onerror = () => { if (btn) btn.classList.remove('speaking'); googleTTS(c, effectiveAccent, btn); };
+      const p = audio.play();
+      if (p && p.catch) p.catch(() => { if (btn) btn.classList.remove('speaking'); googleTTS(c, effectiveAccent, btn); });
+      window._audio = audio;
+      return;
+    }
   }
-
-  ttsFallback(c, eff, btn);
+  googleTTS(c, effectiveAccent, btn);
 }
 
-/* Озвучка примера — сразу женский TTS (API не синтезирует предложения) */
 function speakText(text, accent, btn) {
   if (btn) btn.classList.add('speaking');
-  ttsFallback({ tts: text, w: text }, accent, btn, text);
+  const lang = accent === 'BrE' ? 'en-GB' : 'en-US';
+  const url = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob'
+            + '&tl=' + encodeURIComponent(lang)
+            + '&q=' + encodeURIComponent(text);
+  const audio = new Audio();
+  audio.src = url;
+  if (btn) {
+    audio.onended = () => btn.classList.remove('speaking');
+    audio.onerror = () => { btn.classList.remove('speaking'); ttsFallbackText(text, accent, btn); };
+  }
+  const p = audio.play();
+  if (p && p.catch) p.catch(() => { if (btn) btn.classList.remove('speaking'); ttsFallbackText(text, accent, btn); });
+  window._audio = audio;
 }
 
-/* Клик по кнопке с data-text / data-accent */
-function speakFromBtn(btn) {
-  const text   = btn.dataset.text || '';
-  const accent = btn.dataset.accent || 'BrE';
-  speakText(text, accent, btn);
+function googleTTS(c, accent, btn) {
+  const lang = accent === 'BrE' ? 'en-GB' : 'en-US';
+  const text = c.tts || c.w;
+  const url = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob'
+            + '&tl=' + encodeURIComponent(lang)
+            + '&q=' + encodeURIComponent(text);
+  const audio = new Audio();
+  audio.src = url;
+  audio.onended = () => { if (btn) btn.classList.remove('speaking'); };
+  audio.onerror = () => { if (btn) btn.classList.remove('speaking'); ttsFallback(c, accent, btn); };
+  const p = audio.play();
+  if (p && p.catch) p.catch(() => { if (btn) btn.classList.remove('speaking'); ttsFallback(c, accent, btn); });
+  window._audio = audio;
+}
+
+/* ============================================================
+   FALLBACK — Web Speech API (женский голос)
+   ============================================================ */
+const FEMALE_NAMES = [
+  'samantha','karen','moira','tessa','victoria','fiona','serena','allison','ava','susan',
+  'nicky','kate','zira','hazel','linda','heera','female','женский',
+  'google uk english female','google us english',
+  'joanna','salli','kimberly','ivy','kendra','aria','jenny','michelle','emma',
+  'amy','olivia','sonia','catherine','clara','elizabeth','libby','maisie','natasha',
+  'kathy','agnes','sara','milena','alice','amelie','audrey','chloe','nora','marlene','anna'
+];
+const MALE_NAMES = [
+  'david','daniel','alex','fred','george','male','мужской',
+  'mark','james','ryan','tom','guy','matthew','joey','justin','brian','eric',
+  'christopher','steve','oliver','thomas','rishi','arthur','liam','aaron',
+  'nathan','gordon','richard','diego','jorge','juan','carlos','felipe','luca',
+  'paolo','hiroshi','kevin','roger','ralph','bruce','nigel','graham','simon',
+  'peter','paul','michael','william','robert','john','yuri','dmitri'
+];
+function isMaleVoice(v){
+  const n = v.name.toLowerCase().replace(/female/g,'');
+  return MALE_NAMES.some(m => n.includes(m));
+}
+function isFemaleVoice(v){
+  if (isMaleVoice(v)) return false;
+  const n = v.name.toLowerCase();
+  return FEMALE_NAMES.some(f => n.includes(f));
+}
+
+function ttsFallback(card, accent, btn){
+  if (!('speechSynthesis' in window)) return;
+  const text = (card.tts || card.w).replace(/\s*\(.*?\)\s*/g,' ').replace(/\s*\/\s*/g,' or ').replace(/^the\s+/i,'').trim();
+  doSpeak(text, accent, btn);
+}
+function ttsFallbackText(text, accent, btn){
+  if (!('speechSynthesis' in window)) return;
+  doSpeak(text.replace(/<[^>]*>/g, '').trim(), accent, btn);
+}
+function doSpeak(text, accent, btn){
+  const u = new SpeechSynthesisUtterance(text);
+  const voices = speechSynthesis.getVoices();
+  const target = accent === 'BrE' ? 'en-gb' : 'en-us';
+  let voice = voices.find(v => v.lang.replace('_','-').toLowerCase() === target && isFemaleVoice(v));
+  if (!voice) voice = voices.find(v => v.lang.replace('_','-').toLowerCase().startsWith(target) && isFemaleVoice(v));
+  if (!voice) voice = voices.find(v => v.lang.toLowerCase().startsWith('en') && isFemaleVoice(v));
+  if (!voice) voice = voices.find(v => isFemaleVoice(v));
+  if (!voice) voice = voices.find(v => v.lang.toLowerCase().startsWith('en') && !isMaleVoice(v));
+  let female = false;
+  if (voice){ u.voice = voice; u.lang = voice.lang; female = isFemaleVoice(voice); }
+  else u.lang = accent === 'BrE' ? 'en-GB' : 'en-US';
+  u.rate = 0.95;
+  u.pitch = female ? 1.15 : 1.5;
+  u.volume = 1;
+  if (btn) {
+    u.onend = () => btn.classList.remove('speaking');
+    u.onerror = () => btn.classList.remove('speaking');
+  }
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
 }
 
 /* ============================================================
@@ -818,7 +961,7 @@ function playerPlay() {
   speakCard(globalIndex, playerAccent, dummyBtn);
   playerTimer = setTimeout(() => {
     if (playerPlaying) playerNext();
-  }, 2200);
+  }, 1900);
 }
 function playerPause() {
   playerPlaying = false;
@@ -835,10 +978,437 @@ function playerNext() {
 }
 
 /* ============================================================
+   ====================== ТРЕНАЖЁР ============================
+   ============================================================ */
+let trainerTheme = 'all';
+let trainerMode = 'mixed';
+let trainerCount = 10;
+let quizQuestions = [];
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+let quizMistakes = [];
+let currentQuestion = null;
+
+/* ---------- SRS (localStorage) ---------- */
+function getSRS(){
+  try { return JSON.parse(localStorage.getItem('womens-wrongs-srs') || '{}'); }
+  catch(e){ return {}; }
+}
+function saveSRS(s){
+  try { localStorage.setItem('womens-wrongs-srs', JSON.stringify(s)); } catch(e){}
+}
+function recordAnswer(word, correct){
+  const srs = getSRS();
+  const rec = srs[word] || {right:0, wrong:0, level:0};
+  if (correct){ rec.right++; rec.level = Math.min(5, rec.level + 1); }
+  else { rec.wrong++; rec.level = Math.max(0, rec.level - 1); }
+  rec.lastSeen = Date.now();
+  srs[word] = rec;
+  saveSRS(srs);
+}
+
+/* ---------- utils ---------- */
+function shuffle(a){
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pickDistractors(card, key, n){
+  n = n || 3;
+  const sameTheme = ALL_CARDS.filter(x => x !== card && x.cat === card.cat);
+  const rest = ALL_CARDS.filter(x => x !== card && x.cat !== card.cat);
+  const ordered = shuffle(sameTheme).concat(shuffle(rest));
+  const seen = new Set([card[key]]);
+  const res = [];
+  for (const o of ordered){
+    if (res.length >= n) break;
+    const v = o[key];
+    if (!v || seen.has(v)) continue;
+    seen.add(v);
+    res.push(o);
+  }
+  return res;
+}
+function gapSentence(card){
+  if (!card.ex || !card.ex.length) return null;
+  const en = card.ex[0].en;
+  if (!/<em>/.test(en)) return null;
+  return en.replace(/<em>(.*?)<\/em>/g, '<span class="gap">______</span>');
+}
+function normalizeVariants(word){
+  return word.toLowerCase()
+    .replace(/\s*\(.*?\)\s*/g, '')
+    .split('/')
+    .map(s => s.replace(/[^a-z\s'\-]/g, '').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+function checkSpellAnswer(input, card){
+  const variants = new Set();
+  normalizeVariants(card.w).forEach(v => variants.add(v));
+  if (card.tts) normalizeVariants(card.tts).forEach(v => variants.add(v));
+  const cleaned = input.toLowerCase()
+    .replace(/[^a-z\s'\-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!cleaned) return false;
+  if (variants.has(cleaned)) return true;
+  if (variants.has(cleaned.replace(/^to\s+/, ''))) return true;
+  if (variants.has(cleaned.replace(/^the\s+/, ''))) return true;
+  return false;
+}
+
+/* ---------- screens ---------- */
+function openTrainer(){
+  document.getElementById('trainerOverlay').classList.add('active');
+  document.getElementById('trainerStart').style.display = 'block';
+  document.getElementById('trainerQuiz').style.display = 'none';
+  document.getElementById('trainerResult').style.display = 'none';
+  renderTrainerThemes();
+  renderTrainerStats();
+  bindTrainerChips();
+  window.scrollTo(0, 0);
+}
+function closeTrainer(){
+  document.getElementById('trainerOverlay').classList.remove('active');
+  speechSynthesis.cancel();
+  if (window._audio) { try { window._audio.pause(); } catch(e){} }
+}
+function closeTrainerEarly(){
+  const started = quizIndex > 0 || quizAnswered || quizScore > 0;
+  if (started){
+    if (!confirm('Прервать тренировку?\n\nРезультаты текущей сессии не будут показаны. (Прогресс слов сохранён.)')) return;
+  }
+  closeTrainer();
+}
+function renderTrainerThemes(){
+  const c = document.getElementById('trainerThemes');
+  c.innerHTML = themes.map(t => {
+    const label = t === 'all' ? '📚 Все' : t;
+    const active = t === trainerTheme ? 'active' : '';
+    return `<button class="chip ${active}" data-theme="${t}">${label}</button>`;
+  }).join('');
+}
+function renderTrainerStats(){
+  const srs = getSRS();
+  let learned = 0, learning = 0, newW = 0;
+  ALL_CARDS.forEach(c => {
+    const lvl = srs[c.w] ? srs[c.w].level : 0;
+    if (lvl >= 4) learned++;
+    else if (lvl >= 1) learning++;
+    else newW++;
+  });
+  document.getElementById('trainerStats').innerHTML = `
+    <div class="stat"><span class="stat-num">${learned}</span><span class="stat-label">выучено</span></div>
+    <div class="stat"><span class="stat-num">${learning}</span><span class="stat-label">в процессе</span></div>
+    <div class="stat"><span class="stat-num">${newW}</span><span class="stat-label">новых</span></div>
+  `;
+}
+function bindTrainerChips(){
+  document.querySelectorAll('#trainerThemes .chip').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('#trainerThemes .chip').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      trainerTheme = b.dataset.theme;
+    };
+  });
+  document.querySelectorAll('#trainerModes .chip').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('#trainerModes .chip').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      trainerMode = b.dataset.mode;
+    };
+  });
+  document.querySelectorAll('#trainerCount .chip').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('#trainerCount .chip').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      trainerCount = parseInt(b.dataset.count, 10);
+    };
+  });
+}
+
+/* ---------- start / generation ---------- */
+function startTrainer(){
+  quizQuestions = generateQuestions();
+  if (!quizQuestions.length){
+    alert('Нет слов для тренировки в этой теме.');
+    return;
+  }
+  quizIndex = 0;
+  quizScore = 0;
+  quizMistakes = [];
+  document.getElementById('trainerStart').style.display = 'none';
+  document.getElementById('trainerResult').style.display = 'none';
+  document.getElementById('trainerQuiz').style.display = 'block';
+  window.scrollTo(0, 0);
+  renderQuestion();
+}
+
+function generateQuestions(){
+  const pool = trainerTheme === 'all'
+    ? [...ALL_CARDS]
+    : ALL_CARDS.filter(c => c.cat === trainerTheme);
+  if (!pool.length) return [];
+
+  const srs = getSRS();
+  const scored = pool.map(c => {
+    const lvl = srs[c.w] ? srs[c.w].level : 0;
+    const weight = Math.random() * 1.2 + (5 - lvl) * 0.45;
+    return { c, weight };
+  });
+  scored.sort((a, b) => b.weight - a.weight);
+
+  const n = Math.min(trainerCount, pool.length);
+  let chosen = scored.slice(0, n).map(x => x.c);
+  while (chosen.length < trainerCount){
+    chosen.push(pool[Math.floor(Math.random() * pool.length)]);
+  }
+  return shuffle(chosen).map(makeQuestion);
+}
+
+function makeQuestion(card){
+  let mode = trainerMode;
+  if (mode === 'mixed'){
+    const modes = ['en-ru', 'ru-en', 'listen', 'fill', 'spell'];
+    mode = modes[Math.floor(Math.random() * modes.length)];
+  }
+  if (mode === 'fill' && !gapSentence(card)) mode = 'en-ru';
+  if (mode === 'listen' && !(card.tts || card.w)) mode = 'en-ru';
+  return { card: card, mode: mode };
+}
+
+/* ---------- rendering question ---------- */
+function renderQuestion(){
+  const q = quizQuestions[quizIndex];
+  currentQuestion = q;
+  quizAnswered = false;
+
+  document.getElementById('quizProgress').textContent = (quizIndex + 1) + ' / ' + quizQuestions.length;
+  document.getElementById('quizScore').textContent = '✓ ' + quizScore;
+  document.getElementById('quizBarFill').style.width = (quizIndex / quizQuestions.length * 100) + '%';
+  document.getElementById('quizFeedback').innerHTML = '';
+  document.getElementById('quizNextWrap').style.display = 'none';
+
+  const typeEl = document.getElementById('quizType');
+  const promptEl = document.getElementById('quizPrompt');
+  const optionsEl = document.getElementById('quizOptions');
+  optionsEl.innerHTML = '';
+  optionsEl.className = 'quiz-options';
+
+  const c = q.card;
+
+  if (q.mode === 'en-ru'){
+    typeEl.textContent = '🇬🇧 → 🇷🇺 Как переводится?';
+    let ipa = '';
+    if (c.br && !c.onlyAm) ipa = 'BrE ' + c.br;
+    if (c.am && !c.onlyBr) ipa += (ipa ? '  ·  ' : '') + 'AmE ' + c.am;
+    promptEl.innerHTML = `<div class="q-word">${c.w}</div>` + (ipa ? `<div class="q-ipa">${ipa}</div>` : '');
+    renderOptions(q, optionsEl, 'm');
+
+  } else if (q.mode === 'ru-en'){
+    typeEl.textContent = '🇷🇺 → 🇬🇧 Выбери слово';
+    promptEl.innerHTML = `<div class="q-trans">${c.m}</div>`;
+    renderOptions(q, optionsEl, 'w');
+
+  } else if (q.mode === 'listen'){
+    typeEl.textContent = '🎧 Послушай и выбери слово';
+    promptEl.innerHTML = `<button class="q-play-btn" onclick="playQuestionAudio()">🔊 Play</button>`;
+    renderOptions(q, optionsEl, 'w');
+    setTimeout(playQuestionAudio, 400);
+
+  } else if (q.mode === 'fill'){
+    typeEl.textContent = '✍️ Заполни пропуск';
+    const sent = gapSentence(c) || c.w;
+    promptEl.innerHTML = `<div class="q-sentence">${sent}</div>`;
+    renderOptions(q, optionsEl, 'w');
+
+  } else if (q.mode === 'spell'){
+    typeEl.textContent = '⌨️ Напиши слово по-английски';
+    promptEl.innerHTML = `<div class="q-trans">${c.m}</div>`;
+    optionsEl.className = 'quiz-options spell-mode';
+    optionsEl.innerHTML = `
+      <input type="text" id="spellInput" placeholder="Напиши по-английски..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button class="spell-check" onclick="checkSpell()">Проверить</button>`;
+    const inp = document.getElementById('spellInput');
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkSpell(); });
+    setTimeout(() => inp.focus(), 120);
+  }
+}
+
+function renderOptions(q, container, key){
+  const c = q.card;
+  const correct = c[key];
+  const wrongs = pickDistractors(c, key, 3);
+  const opts = shuffle([
+    { text: correct, correct: true },
+    ...wrongs.map(w => ({ text: w[key], correct: false }))
+  ]);
+  container.innerHTML = '';
+  opts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'q-option';
+    btn.textContent = o.text;
+    btn.dataset.correct = o.correct ? '1' : '0';
+    btn.addEventListener('click', () => answerOption(btn));
+    container.appendChild(btn);
+  });
+}
+
+function playQuestionAudio(){
+  const c = currentQuestion && currentQuestion.card;
+  if (!c) return;
+  const gi = ALL_CARDS.indexOf(c);
+  const accent = c.onlyAm ? 'AmE' : 'BrE';
+  speakCard(gi, accent, null);
+}
+
+/* ---------- answering ---------- */
+function answerOption(btn){
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const correct = btn.dataset.correct === '1';
+
+  document.querySelectorAll('.q-option').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === '1') b.classList.add('correct');
+  });
+  if (!correct) btn.classList.add('wrong');
+
+  finishAnswer(correct, currentQuestion.card);
+}
+
+function checkSpell(){
+  if (quizAnswered) return;
+  const input = document.getElementById('spellInput');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) {
+    input.focus();
+    return;
+  }
+  const c = currentQuestion.card;
+  const correct = checkSpellAnswer(val, c);
+  quizAnswered = true;
+  input.disabled = true;
+  if (correct) input.classList.add('correct');
+  else input.classList.add('wrong');
+
+  if (!correct) input.value = val + '  →  ' + c.w;
+
+  finishAnswer(correct, c);
+}
+
+function finishAnswer(correct, card){
+  if (correct) quizScore++;
+  else quizMistakes.push(card);
+  recordAnswer(card.w, correct);
+
+  document.getElementById('quizScore').textContent = '✓ ' + quizScore;
+
+  const fb = document.getElementById('quizFeedback');
+  fb.innerHTML = correct
+    ? `<div class="fb ok">✓ Верно! <b>${card.w}</b> — ${card.m}</div>`
+    : `<div class="fb no">✗ Правильно: <b>${card.w}</b> — ${card.m}</div>`;
+
+  document.getElementById('quizNextWrap').style.display = 'flex';
+
+  const gi = ALL_CARDS.indexOf(card);
+  const accent = card.onlyAm ? 'AmE' : 'BrE';
+  setTimeout(() => {
+    if (currentQuestion && currentQuestion.mode !== 'listen'){
+      speakCard(gi, accent, null);
+    }
+  }, 350);
+}
+
+function nextQuestion(){
+  quizIndex++;
+  if (quizIndex >= quizQuestions.length){
+    showResult();
+  } else {
+    renderQuestion();
+    window.scrollTo(0, 0);
+  }
+}
+
+/* ---------- early finish ---------- */
+function finishEarly(){
+  const answeredTotal = quizIndex + (quizAnswered ? 1 : 0);
+  if (answeredTotal === 0){
+    if (confirm('Ты ещё не ответил ни на один вопрос. Закрыть тренажёр?')) closeTrainer();
+    return;
+  }
+  if (!confirm(`Завершить тренировку досрочно?\n\nПройдено: ${answeredTotal} из ${quizQuestions.length}.\nБудут показаны результаты по уже отвеченным вопросам.`)) return;
+  // обрезаем список до отвеченных
+  quizQuestions = quizQuestions.slice(0, answeredTotal);
+  showResult();
+}
+
+/* ---------- result ---------- */
+function showResult(){
+  document.getElementById('trainerQuiz').style.display = 'none';
+  document.getElementById('trainerResult').style.display = 'block';
+
+  const total = quizQuestions.length;
+  const pct = total ? Math.round(quizScore / total * 100) : 0;
+
+  document.getElementById('resultScore').textContent = quizScore + ' / ' + total + '  (' + pct + '%)';
+
+  let msg = '';
+  if (pct >= 90) msg = '🏆 Отлично! Ты уверенно знаешь эти слова.';
+  else if (pct >= 70) msg = '👍 Хорошо! Ещё немного практики — и будет идеально.';
+  else if (pct >= 50) msg = '💪 Неплохо, но есть над чем поработать.';
+  else msg = '📚 Стоит повторить материал и попробовать снова.';
+  document.getElementById('resultMsg').textContent = msg;
+
+  const list = document.getElementById('resultList');
+  if (quizMistakes.length === 0){
+    list.innerHTML = `<div class="result-perfect">Идеально — ни одной ошибки! ✨</div>`;
+  } else {
+    list.innerHTML = `<div class="result-list-title">Повтори эти слова:</div>` +
+      quizMistakes.map(c => `<div class="result-item"><b>${c.w}</b> — ${c.m}</div>`).join('');
+  }
+
+  const repeatBtn = document.getElementById('repeatBtn');
+  repeatBtn.style.display = quizMistakes.length ? 'inline-block' : 'none';
+
+  renderTrainerStats();
+  window.scrollTo(0, 0);
+}
+
+function restartTrainer(){
+  startTrainer();
+}
+
+function repeatMistakes(){
+  if (!quizMistakes.length) return;
+  const unique = [];
+  const seen = new Set();
+  quizMistakes.forEach(c => {
+    if (!seen.has(c.w)){ seen.add(c.w); unique.push(c); }
+  });
+  quizQuestions = shuffle(unique).map(makeQuestion);
+  quizIndex = 0;
+  quizScore = 0;
+  quizMistakes = [];
+  document.getElementById('trainerResult').style.display = 'none';
+  document.getElementById('trainerQuiz').style.display = 'block';
+  renderQuestion();
+  window.scrollTo(0, 0);
+}
+
+/* ============================================================
    ИНИЦИАЛИЗАЦИЯ
    ============================================================ */
 renderThemeFilter();
 renderCards();
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
 </script>
 
 </body>
